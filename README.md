@@ -46,3 +46,8 @@ npm install
 
 npm run dev
 ```
+
+## 安装elementui
+```
+npm install element-ui --save
+```
