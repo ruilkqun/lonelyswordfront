@@ -9,25 +9,22 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/scss/font-awesome.scss'
 
-
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
-
-router.beforeEach((to, from, next ) => {
+router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
-    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('user')
   }
-  const user = sessionStorage.getItem('user');
+  const user = sessionStorage.getItem('user')
   if (!user && to.path !== '/login') {
     next({
       path: '/login'
     })
   } else {
-    next();
+    next()
   }
-} )
-
+})
 
 /* eslint-disable no-new */
 new Vue({

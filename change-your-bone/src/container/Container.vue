@@ -82,7 +82,7 @@
 
 <script>
 export default {
-  name: "Container",
+  name: 'Container',
   data () {
     return {
       username: '',
@@ -94,29 +94,29 @@ export default {
       this.isCollapse = !this.isCollapse
     },
     logout: function () {
-      this.$confirm('确认退出?','提示', {})
-      .then(() => {
-        sessionStorage.removeItem('user');
-        this.$router.push('/login');
-      })
-      .catch(() => { });
+      this.$confirm('确认退出?', '提示', {})
+        .then(() => {
+          sessionStorage.removeItem('user')
+          this.$router.push('/login')
+        })
+        .catch(() => { })
     },
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
+    handleOpen (key, keyPath) {
+      console.log(key, keyPath)
     },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
+    handleClose (key, keyPath) {
+      console.log(key, keyPath)
     },
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
-    },
-  },
-  mounted: function () {
-    let user = sessionStorage.getItem('user');
-    if (user) {
-      this.username = user;
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
     }
   },
+  mounted: function () {
+    let user = sessionStorage.getItem('user')
+    if (user) {
+      this.username = user
+    }
+  }
 }
 </script>
 
