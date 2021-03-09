@@ -60,3 +60,8 @@ npm install element-ui --save
 npm install --save-dev node-sass@4.14.1
 npm install --save-dev sass-loader@7.3.1
 ```
+
+## 安装font-awesome
+```
+npm install --save font-awesome
+```

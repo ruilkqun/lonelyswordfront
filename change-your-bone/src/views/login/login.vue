@@ -13,13 +13,29 @@
           v-model="ruleFormTheWindIsClear.username"
           auto-complete="off"
           placeholder="用户名">
+            <template slot="prepend">
+              <span class="fa fa-user fa-lg"
+                style="width: 13px">
+              </span>
+            </template>
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input type="password"
+          <el-input :type="form.pwdType"
           v-model="ruleFormTheWindIsClear.password"
           auto-complete="off"
           placeholder="密码">
+            <template slot="prepend">
+              <span class="fa fa-lock fa-lg"
+               style="width: 13px">
+              </span>
+            </template>
+            <template slot="suffix">
+              <span class="password-eye"
+               @click="showPassword"
+               :class="form.eyeType">
+              </span>
+            </template>
           </el-input>
         </el-form-item>
         <el-checkbox v-model="checked"
@@ -38,6 +54,10 @@
 export default {
   data () {
     return {
+      form: {
+        pwdType: 'password',
+        eyeType: 'fa fa-eye-slash fa-lg',
+      },
       login_ing: false,
       ruleFormTheWindIsClear: {
         username: 'admin',
@@ -71,6 +91,17 @@ export default {
           return false
         }
       })
+    },
+    showPassword () {
+      if (this.form.pwdType === 'password') {
+        // console.log(this.pwdType)
+        this.form.pwdType = 'text'
+        this.form.eyeType = 'fa fa-eye fa-lg'
+      } else {
+        // console.log(this.pwdType)
+        this.form.pwdType = 'password'
+        this.form.eyeType = 'fa fa-eye-slash fa-lg'
+      }
     }
   }
 }
