@@ -65,3 +65,8 @@ npm install --save-dev sass-loader@7.3.1
 ```
 npm install --save font-awesome
 ```
+
+## 安装js-md5
+```
+npm install --save-dev js-md5
+```
