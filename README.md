@@ -1,7 +1,10 @@
 # lonelyswordfront
 独孤九剑
 
-
+## cnpm安装
+```
+npm install cnpm -g
+```
 ## 一、安装webpack
 ```
 root下：
@@ -50,4 +53,10 @@ npm run dev
 ## 安装elementui
 ```
 npm install element-ui --save
+```
+
+## 安装node-sass sass-loader
+```
+npm install --save-dev node-sass@4.14.1
+npm install --save-dev sass-loader@7.3.1
 ```
