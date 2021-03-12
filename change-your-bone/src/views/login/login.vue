@@ -54,6 +54,7 @@
 
 <script>
 import md5 from 'js-md5'
+import { getLoginResult } from '../../api/login'
 
 export default {
   name: 'Login',
@@ -90,11 +91,12 @@ export default {
         username: [{ required: true, message: 'please enter your account', trigger: 'blur' }],
         password: [{ required: true, message: 'please enter your password', trigger: 'blur' }]
       },
-      checked: false
+      checked: false,
+      token: ''
     }
   },
   methods: {
-    handleSubmit (event) {
+    handleSubmit: function () {
       this.$refs.ruleFormTheWindIsClear.validate((valid) => {
         if (valid) {
           this.login_ing = true
@@ -103,8 +105,15 @@ export default {
           if (this.hidePassword !== '' && this.ruleFormTheWindIsClear.password === '********') {
             pwd = this.hidePassword
           }
-          this.$store.dispatch('LoginByUsername', {'username': user, 'password': pwd})
-            .then(() => {
+
+          let para = {
+            'account': user,
+            'pwd': this.ruleFormTheWindIsClear.password
+          }
+
+          getLoginResult(para).then((res) => {
+            // alert("haha")
+            if (res.token !== '') {
               this.login_ing = false
               if (this.rememberme) {
                 this.setCookie(this.ruleFormTheWindIsClear.username, pwd, 7)
@@ -112,17 +121,17 @@ export default {
                 this.deleteCookie()
               }
               this.$router.push({path: this.redirect || '/'})
+            }
+          }).catch(err => {
+            this.login_ing = false
+            this.$alert(err, {
+              type: 'warning',
+              confirmButtonText: 'ok'
             })
-            .catch(err => {
-              this.login_ing = false
-              this.$alert(err, {
-                type: 'warning',
-                confirmButtonText: 'ok'
-              })
-            })
+          })
         } else {
-          console.log('error submit!');
-          return false;
+          console.log('error submit!')
+          return false
         }
       })
     },

@@ -70,3 +70,8 @@ npm install --save font-awesome
 ```
 npm install --save-dev js-md5
 ```
+
+## 安装axios   
+```
+npm install --save axios
+```
