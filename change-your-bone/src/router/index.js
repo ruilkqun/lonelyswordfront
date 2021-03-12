@@ -19,22 +19,36 @@ export default new Router({
     },
     {
       path: '/',
-      redirect: '/dashboard',
+      redirect: '/welcome',
       name: Container,
       component: Container,
       children: [
-        { path: 'dashboard', name: '首页', component: Dashboard,
-          children: [
-            { path: 'dashboard2', name: '首页2', component: Dashboard,
-              children: [
-                { path: 'dashboard21', name: '首页21', component: Dashboard,},
-              ]
-            },
-          ]
+        {
+          path: 'welcome', name: '欢迎', component: Welcome
         },
-        { path: 'usdt', name: '小记', component: USDT },
-        { path: 'welcome', name: '欢迎', component: Welcome  }
+        {
+          path: 'usdt', name: '小记', component: USDT
+        },
+        {
+          path: 'dashboard',
+          name: '首页',
+          component: Dashboard,
+          children: [
+            {
+              path: 'dashboard2',
+              name: '首页2',
+              component: Dashboard,
+              children: [
+                {
+                  path: 'dashboard21',
+                  name: '首页21',
+                  component: Dashboard
+                }
+              ]
+            }
+          ]
+        }
       ]
-    },
+    }
   ]
 })

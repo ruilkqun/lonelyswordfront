@@ -7,7 +7,7 @@
     </div>
 
     <el-menu class="el-menu-vertical-demo"
-             style="background-color: #3C6D93"
+             style="background-color: #263445;"
       :default-active="defaultActive"
       router
       :collapse="collapse">
@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import SidebarItem from "./SidebarItem";
+import SidebarItem from './SidebarItem'
 export default {
-  name: "Sidebar",
+  name: 'Sidebar',
   components: {
     SidebarItem
   },
@@ -37,10 +37,10 @@ export default {
   },
 
   computed: {
-    defaultActive() {
+    defaultActive () {
       return this.$route.path
     },
-    fatherPath() {
+    fatherPath () {
       return this.$router.options.routes[1].path
     }
   }

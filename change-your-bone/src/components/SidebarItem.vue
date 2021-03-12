@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  name: "SidebarItem",
+  name: 'SidebarItem',
   props: {
     subroute: {
       type: Object
@@ -42,24 +42,24 @@ export default {
   },
 
   computed: {
-    defaultActive: function() {
+    defaultActive: function () {
       return this.$route.path
-    },
+    }
   },
 
   methods: {
     genPath: function () {
       let arr = [ ...arguments ]
       let path = arr.map(v => {
-        while (v[0] === '/' ) {
+        while (v[0] === '/') {
           v = v.substring(1)
         }
-        while (v[-1] === '/' ) {
+        while (v[-1] === '/') {
           v = v.substring(0, v.length)
         }
         return v
       }).join('/')
-      path = path[0] === '/' ? path : '/'+path
+      path = path[0] === '/' ? path : '/' + path
       return path
     },
     handleOpen: function (key, keyPath) {
@@ -70,7 +70,7 @@ export default {
     }
   },
 
-  mounted() {
+  mounted () {
     console.log('sidebar routes: ', this.routes)
   }
 }

@@ -121,7 +121,7 @@ export default {
               } else {
                 this.deleteCookie()
               }
-              window.sessionStorage.setItem("jwt", res.token)
+              window.sessionStorage.setItem('jwt', res.token)
               // alert(window.sessionStorage.getItem("jwt"))
               this.$router.push({path: this.redirect || '/'}).catch(() => {})
             }

@@ -50,8 +50,28 @@ body .el-table th.gutter {
     border-right: $solidBorder;
     &-left {
       //background-color: rgb(238, 241, 246);
-      background-color: rgb(60,109,147);
+      background-color: rgb(38,52,69);
     }
+
+    .el-menu-item {
+      background-color: #263445;
+      color: white;
+    }
+
+    .el-menu-item.is-active {
+      background-color: #263445;
+      color: white;
+    }
+
+    .el-submenu {
+      background-color: #263445;
+      color: white;
+    }
+
+    .el-submenu.is-active {
+      border-left: 5px solid #409eff;
+    }
+
     &-logo {
       height: 60px;
       text-align: center;
@@ -60,7 +80,7 @@ body .el-table th.gutter {
       width: 66px!important;
     }
     &-expanded {
-      width: 230px!important;
+      width: 220px!important;
     }
   }
   &-header {

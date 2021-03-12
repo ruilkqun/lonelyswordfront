@@ -12,12 +12,9 @@ import '@/styles/index.scss'
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
-
-
-
 router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
-    window.sessionStorage.removeItem("jwt")
+    window.sessionStorage.removeItem('jwt')
   }
   const jwt = sessionStorage.getItem('jwt')
   if (!jwt && to.path !== '/login') {

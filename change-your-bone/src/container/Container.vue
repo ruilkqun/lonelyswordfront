@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import Sidebar from "../components/Sidebar";
+import Sidebar from '@/components/Sidebar'
 export default {
   name: 'Container',
   components: {
@@ -67,7 +67,7 @@ export default {
   data () {
     return {
       username: '',
-      isCollapse: false,
+      isCollapse: false
     }
   },
   methods: {
