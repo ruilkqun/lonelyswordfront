@@ -86,12 +86,13 @@ export default {
   data () {
     return {
       username: '',
-      isCollapse: false
+      isCollapse: false,
     }
   },
   methods: {
     toggleSideBar () {
       this.isCollapse = !this.isCollapse
+      // alert(window.sessionStorage.getItem("jwt"))
     },
     logout: function () {
       this.$confirm('确认退出?', '提示', {})

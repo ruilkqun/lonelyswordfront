@@ -108,7 +108,8 @@ export default {
 
           let para = {
             'account': user,
-            'pwd': this.ruleFormTheWindIsClear.password
+            'pwd': pwd
+            // 'pwd': this.ruleFormTheWindIsClear.password
           }
 
           getLoginResult(para).then((res) => {
@@ -120,6 +121,8 @@ export default {
               } else {
                 this.deleteCookie()
               }
+              window.sessionStorage.setItem("jwt", res.token)
+              // alert(window.sessionStorage.getItem("jwt"))
               this.$router.push({path: this.redirect || '/'}).catch(() => {})
             }
           }).catch(err => {
