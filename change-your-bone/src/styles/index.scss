@@ -53,6 +53,7 @@ body .el-table th.gutter {
       background-color: rgb(38,52,69);
     }
 
+
     .el-menu-item {
       background-color: #263445;
       color: white;
@@ -65,11 +66,11 @@ body .el-table th.gutter {
 
     .el-submenu {
       background-color: #263445;
-      color: white;
+      color: red;
     }
 
     .el-submenu.is-active {
-      border-left: 5px solid #409eff;
+      border-left: 5px solid #263445;
     }
 
     &-logo {

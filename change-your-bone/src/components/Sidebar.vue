@@ -7,7 +7,7 @@
     </div>
 
     <el-menu class="el-menu-vertical-demo"
-             style="background-color: #263445;"
+             text-color="#FFF5EE"
       :default-active="defaultActive"
       router
       :collapse="collapse">
