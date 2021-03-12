@@ -120,7 +120,7 @@ export default {
               } else {
                 this.deleteCookie()
               }
-              this.$router.push({path: this.redirect || '/'})
+              this.$router.push({path: this.redirect || '/'}).catch(() => {})
             }
           }).catch(err => {
             this.login_ing = false

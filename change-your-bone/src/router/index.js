@@ -22,7 +22,7 @@ export default new Router({
       component: Container,
       children: [
         { path: 'dashboard', name: '首页', component: Dashboard },
-        { path: 'usdt', name: '小记', component: USDT },
+        { path: 'usdt', name: '小记', component: USDT }
       ]
     }
   ]
