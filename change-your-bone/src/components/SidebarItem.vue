@@ -2,8 +2,11 @@
   <el-submenu v-if="!subroute.hidden && subroute.children && subroute.children.length > 0"
               :index="genPath(fatherpath, subroute.path)">
     <template slot="title">
-      <i class="el-icon-menu"></i>
-      <span slot="title">{{ subroute.name }}</span>
+<!--      <i class="el-icon-menu"></i>-->
+      <svg-icon :icon-class=subroute.meta.icon.toString()></svg-icon>
+      <span slot="title">
+        &#12288
+        {{ subroute.name }}</span>
     </template>
 
     <SidebarItem v-for="(submenu, subidx) in subroute.children"
@@ -16,19 +19,25 @@
   <el-menu-item style="font-weight: 400"
   v-else-if="!subroute.hidden"
   :index="genPath(fatherpath, subroute.path)">
+    <svg-icon :icon-class=subroute.meta.icon.toString()></svg-icon>
+    &#12288
     {{ subroute.name }}
   </el-menu-item>
 
   <el-menu-item style="font-weight: 400"
   v-else
   :index="genPath(fatherpath,subroute.path)">
+    <svg-icon :icon-class=subroute.meta.icon.toString()></svg-icon>
+    &#12288
     {{ subroute.name }}
   </el-menu-item>
 </template>
 
 <script>
+import Item from './Item'
 export default {
   name: 'SidebarItem',
+  components: Item,
   props: {
     subroute: {
       type: Object

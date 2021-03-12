@@ -75,3 +75,8 @@ npm install --save-dev js-md5
 ```
 npm install --save axios
 ```
+
+## 安装svg-sprite-loader
+```
+npm i svg-sprite-loader -s
+```
