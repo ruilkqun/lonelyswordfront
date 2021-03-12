@@ -36,7 +36,8 @@ html {
     font-weight: 700;
     border-right: $solidBorder;
     &-left {
-      background-color: rgb(238, 241, 246);
+      //background-color: rgb(238, 241, 246);
+      background-color: rgb(60,109,147);
     }
     &-logo {
       height: 60px;
@@ -74,6 +75,7 @@ html {
       height: 100%;
       padding: 20px;
       overflow-y: scroll;
+      background-color: rgb(60,109,147);
   }
   &-footer {
       width: 100%;

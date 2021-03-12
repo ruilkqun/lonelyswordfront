@@ -2,11 +2,12 @@
   <div>
     <div class="app-side-logo">
       <img src="../assets/logo.png"
-           :width="collapse ? '160' : '226'"
+           :width="collapse ? '60' : '60'"
            height="60" alt="">
     </div>
 
     <el-menu class="el-menu-vertical-demo"
+             style="background-color: #3C6D93"
       :default-active="defaultActive"
       router
       :collapse="collapse">
