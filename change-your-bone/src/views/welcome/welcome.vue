@@ -13,7 +13,7 @@ export default {
 <style scoped>
   #welcome_index {
     background: url("../../assets/welcome/welcome.jpg");
-    background-size: 100%;
+    background-size: 100% 100%;
     height: 100%;
   }
 </style>

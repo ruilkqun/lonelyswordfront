@@ -6,7 +6,8 @@
       </el-aside>
 
       <el-container>
-        <el-header class="app-header">
+        <el-header class="app-header"
+        style="background-color: #87CEEB">
           <div style="width: 60px; cursor: pointer;"
           @click.prevent="toggleSideBar">
             <i v-show="!isCollapse" class="el-icon-d-arrow-left"></i>
