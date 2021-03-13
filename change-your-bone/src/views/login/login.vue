@@ -115,6 +115,10 @@ export default {
           getLoginResult(para).then((res) => {
             // alert("haha")
             if (res.token !== '') {
+              this.$message({
+								message: '用户登录成功',
+								type: 'success'
+							});
               this.login_ing = false
               if (this.rememberme) {
                 this.setCookie(this.ruleFormTheWindIsClear.username, pwd, 7)
@@ -124,6 +128,12 @@ export default {
               window.sessionStorage.setItem('jwt', res.token)
               // alert(window.sessionStorage.getItem("jwt"))
               this.$router.push({path: this.redirect || '/'}).catch(() => {})
+            } else {
+                this.$message({
+								message: '用户登录失败，请检查用户名、密码',
+								type: 'failure'
+							});
+              this.login_ing = false
             }
           }).catch(err => {
             this.login_ing = false
