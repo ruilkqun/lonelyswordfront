@@ -61,7 +61,7 @@
         label="是否保留"
       >
         <template slot-scope="scope">
-            <el-button v-if="!scope.row.isEditPropertyShow" type="primary" size="small" @click="editProperty(scope.$index, scope.row.cluster, scope.row.repair_ip, scope.row.report_date)">编辑</el-button>
+            <el-button v-if="!scope.row.removeButtonVisible" type="danger" size="small" @click="removeItem(scope.row.user_id, scope.row.user_account, scope.row.user_phone)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -120,6 +120,49 @@
       </div>
     </el-dialog>
 
+
+    <!--删除界面-->
+    <el-dialog
+      title="删除"
+      :visible.sync="removeFormVisible"
+      :show-close="true"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+    >
+      <el-form
+        ref="form"
+        :model="removeUser"
+        label-width="80px"
+      >
+        <el-form-item label="用户ID">
+          <el-input :disabled="true" v-model="removeUser.id" />
+        </el-form-item>
+        <el-form-item label="用户名">
+          <el-input :disabled="true" v-model="removeUser.account" />
+        </el-form-item>
+        <el-form-item label="电话">
+          <el-input :disabled="true" v-model="removeUser.phone" />
+        </el-form-item>
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click.native="removeBack"
+        >
+          取消
+        </el-button>
+        <el-button
+          type="primary"
+          @click.native="removeSubmit"
+        >
+          提交
+        </el-button>
+      </div>
+    </el-dialog>
+
     <!--工具条-->
     <el-col
       :span="24"
@@ -137,7 +180,7 @@
 </template>
 
 <script>
-  import { createAccount,getAccountList } from "../../api/user";
+  import { createAccount,getAccountList,removeAccount } from "../../api/user";
 
   export default {
     name: 'user',
@@ -150,11 +193,18 @@
           phone: ''
         },
         userList: [],
+        removeUser: {
+			    id: 0,
+			    account: '',
+          phone: ''
+        },
 				total: 0,
 				page: 1,
         pageSizes: 1,
         listLoading: false,
         addFormVisible: false, // 添加界面是否显示
+        removeFormVisible: false, // 删除界面是否显示
+        removeButtonVisible: false, // 删除按钮是否显示
         // 添加界面规则设定
 				addFormRules: {
 					account: [
@@ -218,14 +268,15 @@
 					type: 'warning'
 				}).then(() => {
 				  let para = {
-				    "account": this.addUser.account.toString(),
-            "pwd": this.addUser.pwd.toString(),
-            "iphone": this.addUser.phone.toString(),
-            "note": this.addUser.note.toString()
+				    "user_account": this.addUser.account.toString(),
+            "user_password": this.addUser.pwd.toString(),
+            "user_phone": this.addUser.phone.toString(),
+            "user_note": this.addUser.note.toString()
           };
 				  this.listLoading = true;
 				  createAccount(para).then((res) => {
-            if (res.data === '0') {
+				    // alert(res.result)
+            if (res.result === 'SUCCESS') {
               this.$message({
 								message: '创建用户成功',
 								type: 'success'
@@ -236,7 +287,7 @@
 								type: 'failure'
 							});
             }
-            this.getList();
+            this.showAccountList();
             this.addFormVisible = false;
             this.listLoading = false;
         })
@@ -247,7 +298,53 @@
       addBack: function (){
         this.listLoading = false;
         this.addFormVisible = false;
-      }
+      },
+
+
+      removeItem: function (user_id,user_account,user_phone){
+        this.removeFormVisible = true;
+        this.removeUser.id = user_id;
+        this.removeUser.account = user_account;
+        this.removeUser.phone = user_phone;
+      },
+
+
+      // 开始删除
+			removeSubmit: function () {
+        this.$confirm('是否删除该用户?', '提示', {
+					type: 'warning'
+				}).then(() => {
+				  let para = {
+				    "user_id": this.removeUser.id,
+				    "user_account": this.removeUser.account.toString(),
+            "user_phone": this.removeUser.phone.toString()
+          };
+				  this.listLoading = true;
+				  removeAccount(para).then((res) => {
+				    // alert(res.result)
+            if (res.result === 'SUCCESS') {
+              this.$message({
+								message: '删除用户成功',
+								type: 'success'
+							});
+            }else {
+              this.$message({
+								message: '删除用户失败',
+								type: 'failure'
+							});
+            }
+            this.showAccountList();
+            this.removeFormVisible = false;
+            this.listLoading = false;
+        })
+			})
+      },
+
+      // 退出删除
+      removeBack: function (){
+        this.listLoading = false;
+        this.removeFormVisible = false;
+      },
     }
 	}
 
