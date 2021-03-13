@@ -5,7 +5,7 @@
 <!--      <i class="el-icon-menu"></i>-->
       <svg-icon :icon-class=subroute.meta.icon.toString()></svg-icon>
       <span slot="title">
-        &#12288
+        &#12288 &#12288
         {{ subroute.name }}</span>
     </template>
 
@@ -20,7 +20,7 @@
   v-else-if="!subroute.hidden"
   :index="genPath(fatherpath, subroute.path)">
     <svg-icon :icon-class=subroute.meta.icon.toString()></svg-icon>
-    &#12288
+    &#12288 &#12288
     {{ subroute.name }}
   </el-menu-item>
 
@@ -28,16 +28,14 @@
   v-else
   :index="genPath(fatherpath,subroute.path)">
     <svg-icon :icon-class=subroute.meta.icon.toString()></svg-icon>
-    &#12288
+    &#12288 &#12288
     {{ subroute.name }}
   </el-menu-item>
 </template>
 
 <script>
-import Item from './Item'
 export default {
   name: 'SidebarItem',
-  components: Item,
   props: {
     subroute: {
       type: Object
