@@ -89,7 +89,7 @@
         label="进度调节"
       >
         <template slot-scope="scope">
-            <el-button v-if="!scope.row.removeButtonVisible" type="primary" size="small" @click="removeItem(scope.row.user_id, scope.row.user_account, scope.row.user_phone)">编辑状态</el-button>
+            <el-button v-if="!scope.row.adjustButtonVisible" type="primary" size="small" @click="adjustItem(scope.row.plan_id, scope.row.plan_account)">编辑状态</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -144,6 +144,49 @@
       </div>
     </el-dialog>
 
+
+    <!--编辑进度界面-->
+    <el-dialog
+      title="更改"
+      :visible.sync="adjustFormVisible"
+      :show-close="true"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+    >
+      <el-form
+        ref="form"
+        :model="adjustPlan"
+        label-width="80px"
+      >
+        <el-form-item label="ID">
+          <el-input v-model="adjustPlan.id" :disabled="true" />
+        </el-form-item>
+        <el-form-item label="用户">
+          <el-input v-model="adjustPlan.account" :disabled="true" />
+        </el-form-item>
+        <el-form-item label="进度">
+          <el-input v-model="adjustPlan.schedule"  placeholder="%"/>
+        </el-form-item>
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click.native="adjustBack"
+        >
+          取消
+        </el-button>
+        <el-button
+          type="primary"
+          @click.native="adjustSubmit"
+        >
+          提交
+        </el-button>
+      </div>
+    </el-dialog>
+
     <!--工具条-->
     <el-col
       :span="24"
@@ -161,7 +204,7 @@
 </template>
 
 <script>
-  import { getPlanList,createPlan } from '../../api/plan';
+  import { getPlanList,createPlan,adjustSchedule } from '../../api/plan';
 
   export default {
     name: 'list',
@@ -179,11 +222,18 @@
           schedule: '',
           status: '进行中'
         },
+        adjustPlan: {
+			    id: 0,
+			    account: '',
+          schedule: ''
+        },
 				total: 0,
 				page: 1,
         pageSizes: 1,
         listLoading: false,
         addFormVisible: false, // 添加界面是否显示
+        adjustButtonVisible: false, // 进度调节按钮是否显示
+        adjustFormVisible: false, // 进度调节表单是否显示
         // 添加界面规则设定
 				addFormRules: {
 					account: [
@@ -307,6 +357,51 @@
             this.pageSizes = this.planList.length;
             this.listLoading = false;
         });
+      },
+
+      // 调节 进度 辅助函数
+      adjustItem: function (plan_id,plan_account){
+        this.adjustFormVisible = true;
+        this.adjustPlan.id = plan_id;
+        this.adjustPlan.account = plan_account;
+      },
+
+
+      // 开始 调节 进度
+			adjustSubmit: function () {
+        this.$confirm('是否更新进度?', '提示', {
+					type: 'warning'
+				}).then(() => {
+				  let para = {
+				    "plan_id": this.adjustPlan.id,
+				    "plan_account": this.adjustPlan.account.toString(),
+            "plan_schedule": this.adjustPlan.schedule.toString()
+          };
+				  this.listLoading = true;
+				  adjustSchedule(para).then((res) => {
+				    // alert(res.result)
+            if (res.result === 'SUCCESS') {
+              this.$message({
+								message: '调节进度成功',
+								type: 'success'
+							});
+            }else {
+              this.$message({
+								message: '调节进度失败',
+								type: 'failure'
+							});
+            }
+            this.showPlanList();
+            this.adjustFormVisible = false;
+            this.listLoading = false;
+        })
+			})
+      },
+
+      // 退出 调节 进度
+      adjustBack: function (){
+        this.listLoading = false;
+        this.adjustFormVisible = false;
       },
     }
 	}
