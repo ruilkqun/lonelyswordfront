@@ -10,6 +10,9 @@ import Welcome from '../views/welcome/welcome'
 
 import User from '../views/user/user'
 
+import PlanList from '../views/plan/list'
+import PlanCharts from '../views/plan/charts'
+
 Vue.use(Router)
 
 export default new Router({
@@ -32,6 +35,26 @@ export default new Router({
           meta: { title: '欢迎', icon: 'welcome' }
         },
         {
+          path: 'plan',
+          name: '计划',
+          component: Container,
+          meta: { title: '计划', icon: 'plan' },
+          children: [
+            {
+              path: 'plan-list',
+              name: '清单',
+              component: PlanList,
+              meta: { title: '清单', icon: 'plan-list' }
+            },
+            {
+              path: 'plan-charts',
+              name: '图表',
+              component: PlanCharts,
+              meta: { title: '图表', icon: 'plan-charts' }
+            }
+          ]
+        },
+        {
           path: 'user',
           name: '用户',
           component: User,
@@ -39,31 +62,9 @@ export default new Router({
         },
         {
           path: 'usdt',
-          name: '小记',
+          name: '文章',
           component: USDT,
           meta: { title: '欢迎', icon: 'welcome' }
-        },
-        {
-          path: 'dashboard',
-          name: '首页',
-          component: Dashboard,
-          meta: { title: '欢迎', icon: 'welcome' },
-          children: [
-            {
-              path: 'dashboard2',
-              name: '首页2',
-              component: Dashboard,
-              meta: { title: '欢迎', icon: 'welcome' },
-              children: [
-                {
-                  path: 'dashboard21',
-                  name: '首页21',
-                  component: Dashboard,
-                  meta: { title: '欢迎', icon: 'welcome' }
-                }
-              ]
-            }
-          ]
         }
       ]
     }

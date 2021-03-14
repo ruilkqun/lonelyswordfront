@@ -1,0 +1,8 @@
+import request from './http.js'
+
+const baseUrl = "http://192.168.1.118:9000";
+
+export const getPlanList = params => request('post',baseUrl + '/plan/plan_info', params);
+
+export const createPlan = params => request('post',baseUrl + '/plan/create_plan', params);
+

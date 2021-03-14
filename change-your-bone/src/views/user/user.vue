@@ -244,7 +244,7 @@
     methods: {
       handleCurrentChange(val) {
 				this.page = val;
-				this.getUserList();
+				this.showAccountList();
 			},
 
       // 获取账户信息
