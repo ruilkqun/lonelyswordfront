@@ -80,3 +80,10 @@ npm install --save axios
 ```
 npm i svg-sprite-loader -s
 ```
+
+## 安装highcharts
+```
+npm install highcharts --save
+```
+
+
