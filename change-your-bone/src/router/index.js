@@ -55,16 +55,16 @@ export default new Router({
           ]
         },
         {
-          path: 'user',
-          name: '用户',
-          component: User,
-          meta: { title: '用户管理', icon: 'user' }
-        },
-        {
           path: 'usdt',
           name: '文章',
           component: USDT,
           meta: { title: '欢迎', icon: 'welcome' }
+        },
+        {
+          path: 'user',
+          name: '用户',
+          component: User,
+          meta: { title: '用户管理', icon: 'user' }
         }
       ]
     }
