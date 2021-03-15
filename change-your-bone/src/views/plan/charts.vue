@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import { statisticPlan } from '../../api/plan';
+
 import Highcharts from 'highcharts/highstock';
 import HighchartsMore from 'highcharts/highcharts-more';
 import HighchartsDrilldown from 'highcharts/modules/drilldown';
@@ -62,7 +64,11 @@ export default {
   name: "charts",
   data(){
    return {
+     data_running: [],
+     data_completed: [],
+     categories: [],
      selectTimeResult: '',
+     listLoading: false,
      pickerOptions: {
        disabledDate(time) {
          return time.getTime() > Date.now();
@@ -75,7 +81,39 @@ export default {
   },
   methods: {
     showSelectTimeResult: function () {
-      alert(this.selectTimeResult)
+      // alert(this.selectTimeResult)
+      let para = {
+          "statistical_time": this.selectTimeResult.toString(),
+      };
+      // alert(para)
+      this.listLoading = true;
+      statisticPlan(para).then((res) => {
+         this.data_running = [];
+         this.data_completed = [];
+         this.categories = []
+
+        for(var i=0;i<res.statistical_time.length;i++){
+          this.categories.push(res.statistical_time[i].statistical_time.toString());
+        }
+        // this.categories.push(res.statistical_time[0].statistical_time.toString());
+        // this.categories.push(res.statistical_time[1].statistical_time.toString());
+        for(var k=0;k<res.statistical_running_count.length;k++){
+          this.data_running.push(res.statistical_running_count[k].statistical_running_count);
+        }
+        // this.data_running.push(res.statistical_running_count[0].statistical_running_count);
+        // this.data_running.push(res.statistical_running_count[1].statistical_running_count);
+        for(var v=0;v<res.statistical_completed_count.length;v++){
+        this.data_completed.push(res.statistical_completed_count[v].statistical_completed_count);
+        }
+        // this.data_completed.push(res.statistical_completed_count[0].statistical_completed_count);
+        // this.data_completed.push(res.statistical_completed_count[1].statistical_completed_count);
+
+        // alert(this.data_running)
+        // alert(this.data_completed)
+
+        this.listLoading = false;
+        this.planChart();
+      });
     },
 
     planChart() {
@@ -102,7 +140,7 @@ export default {
             text: '数据来源: postgresql plan_statistic'
           },
           xAxis: {
-            categories: ['2021-03-13', '2021-03-14', '2021-03-15', '2021-03-16']
+            categories: this.categories
           },
           yAxis: {
             title: {
@@ -121,10 +159,10 @@ export default {
           },
           series: [{
             name: '已完成',
-            data: [7.0, 6.9, 9.5, 14.5]
+            data: this.data_completed
           }, {
             name: '进行中',
-            data: [3.9, 4.2, 5.7, 8.5]
+            data: this.data_running
           }]
         });
     }

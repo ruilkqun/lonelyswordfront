@@ -7,3 +7,5 @@ export const getPlanList = params => request('post',baseUrl + '/plan/plan_info',
 export const createPlan = params => request('post',baseUrl + '/plan/create_plan', params);
 
 export const adjustSchedule = params => request('post',baseUrl + '/plan/adjust_schedule', params);
+
+export const statisticPlan = params => request('post',baseUrl + '/plan/statistic_info', params);
