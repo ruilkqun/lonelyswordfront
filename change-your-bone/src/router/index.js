@@ -3,8 +3,8 @@ import Router from 'vue-router'
 // import HelloWorld from '@/components/HelloWorld'
 import Login from '../views/login/login'
 import Container from '../container/Container'
-import Dashboard from '../views/dashboard/index'
-import USDT from '../views/usdt/index'
+// import Dashboard from '../views/dashboard/index'
+import Article from '../views/article/classify'
 
 import Welcome from '../views/welcome/welcome'
 
@@ -55,10 +55,25 @@ export default new Router({
           ]
         },
         {
-          path: 'usdt',
+          path: 'article',
           name: '文章',
-          component: USDT,
-          meta: { title: '欢迎', icon: 'welcome' }
+          component: Article,
+          meta: { title: '文章', icon: 'article' },
+          children: [
+            {
+              path: 'article-classify',
+              name: '分类',
+              component: PlanList,
+              meta: { title: '分类', icon: 'classify' }
+            },
+            {
+              path: 'article-notes',
+              name: '小记',
+              component: Container,
+              meta: { title: '图表', icon: 'notes' },
+
+            }
+          ]
         },
         {
           path: 'user',
