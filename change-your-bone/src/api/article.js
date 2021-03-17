@@ -7,3 +7,5 @@ export const createClassify = params => request('post',baseUrl + '/article/creat
 export const getClassifyList = params => request('get',baseUrl + '/article/classify_info', params);
 
 export const removeClassify = params => request('post',baseUrl + '/article/remove_classify', params);
+
+export const updateClassify = params => request('post',baseUrl + '/article/update_classify', params);

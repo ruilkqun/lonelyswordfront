@@ -42,7 +42,7 @@
         label="是否更改"
       >
         <template slot-scope="scope">
-            <el-button v-if="!scope.row.isEditPropertyShow" type="primary" size="small" @click="editProperty(scope.row.$classify_id)">编辑</el-button>
+            <el-button v-if="!scope.row.isEditPropertyShow" type="primary" size="small" @click="editProperty(scope.row.classify_id)">编辑</el-button>
         </template>
       </el-table-column>
       <el-table-column
@@ -132,6 +132,46 @@
       </div>
     </el-dialog>
 
+
+    <!--编辑界面-->
+    <el-dialog
+      title="编辑"
+      :visible.sync="editFormVisible"
+      :show-close="true"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+    >
+      <el-form
+        ref="form"
+        :model="updateClassify"
+        label-width="80px"
+      >
+        <el-form-item label="ID">
+          <el-input :disabled="true" v-model="updateClassify.classify_id" />
+        </el-form-item>
+        <el-form-item label="名称">
+          <el-input v-model="updateClassify.classify_name" />
+        </el-form-item>
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click.native="updateBack"
+        >
+          取消
+        </el-button>
+        <el-button
+          type="primary"
+          @click.native="updateSubmit"
+        >
+          提交
+        </el-button>
+      </div>
+    </el-dialog>
+
     <!--工具条-->
     <el-col
       :span="24"
@@ -149,7 +189,7 @@
 </template>
 
 <script>
-  import { createClassify,getClassifyList,removeClassify } from "../../api/article";
+  import { createClassify,getClassifyList,removeClassify,updateClassify } from "../../api/article";
 
   export default {
     name: 'article-classify',
@@ -162,6 +202,10 @@
         removeClassify: {
 			    classify_id: 0,
         },
+        updateClassify: {
+			    classify_id: 0,
+          classify_name: '',
+        },
 				total: 0,
 				page: 1,
         pageSizes: 1,
@@ -169,6 +213,8 @@
         addFormVisible: false, // 添加界面是否显示
         removeFormVisible: false, // 删除界面是否显示
         removeButtonVisible: false, // 删除按钮是否显示
+        isEditPropertyShow: false, // 编辑按钮是否显示
+        editFormVisible: false, // 编辑界面是否显示
         // 添加界面规则设定
 				addFormRules: {
 					name: [
@@ -280,6 +326,49 @@
       removeBack: function (){
         this.listLoading = false;
         this.removeFormVisible = false;
+      },
+
+      // 更改分类
+      editProperty: function (classify_id){
+        this.editFormVisible = true;
+        this.updateClassify.classify_id = classify_id;
+      },
+
+      // 退出更新
+      updateBack: function (){
+        this.listLoading = false;
+        this.editFormVisible = false;
+      },
+
+
+      // 开始更新
+			updateSubmit: function () {
+        this.$confirm('是否更新该分类?', '提示', {
+					type: 'warning'
+				}).then(() => {
+				  let para = {
+				    "classify_id": this.updateClassify.classify_id,
+            "classify_name": this.updateClassify.classify_name
+          };
+				  this.listLoading = true;
+				  updateClassify(para).then((res) => {
+				    // alert(res.result)
+            if (res.result === 'SUCCESS') {
+              this.$message({
+								message: '更新该分类成功',
+								type: 'success'
+							});
+            }else {
+              this.$message({
+								message: '更新该分类失败',
+								type: 'failure'
+							});
+            }
+            this.showClassifyList();
+            this.editFormVisible = false;
+            this.listLoading = false;
+        })
+			})
       },
     }
 	}

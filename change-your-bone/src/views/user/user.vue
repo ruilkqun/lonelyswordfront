@@ -346,7 +346,7 @@
         this.removeFormVisible = false;
       },
     }
-	}
+  }
 
 </script>
 
