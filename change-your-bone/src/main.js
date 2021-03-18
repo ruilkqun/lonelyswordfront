@@ -9,8 +9,13 @@ import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/scss/font-awesome.scss'
 import '@/styles/index.scss'
 import './icons'
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+
+
 
 Vue.use(ElementUI)
+Vue.use(mavonEditor)
 Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {

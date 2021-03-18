@@ -66,19 +66,26 @@ export default new Router({
               path: 'article-classify',
               name: '分类',
               component: ArticleClassify,
-              meta: { title: '分类', icon: 'classify' }
+              meta: { title: '分类', icon: 'article-classify' }
             },
             {
               path: 'article-notes',
               name: '小记',
               component: ArticleNote,
-              meta: { title: '图表', icon: 'notes' }
+              meta: { title: '图表', icon: 'article-notes' }
             },
             {
-              path: 'article-classify',
+              path: 'article-display',
               name: '展示',
-              component: ArticleDisplay,
-              meta: { title: '分类', icon: 'display' }
+              component: Container,
+              meta: { title: '展示', icon: 'article-display' },
+              children: [
+              {
+                path: 'article-list',
+                name: '文章列表',
+                component: ArticleDisplay,
+                meta: { title: '文章列表', icon: 'article-list' }
+              }]
             }
           ]
         },

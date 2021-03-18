@@ -86,4 +86,7 @@ npm i svg-sprite-loader -s
 npm install highcharts --save
 ```
 
-
+## 安装mavonEditor
+```
+npm install mavon-editor --save
+```
