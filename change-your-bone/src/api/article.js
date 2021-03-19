@@ -11,3 +11,5 @@ export const removeClassify = params => request('post',baseUrl + '/article/remov
 export const updateClassify = params => request('post',baseUrl + '/article/update_classify', params);
 
 export const createArticle = params => request('post',baseUrl + '/article/create_article', params);
+
+export const getArticleList = params => request('get',baseUrl + '/article/list_info', params);
