@@ -8,6 +8,7 @@ import ArticleClassify from '../views/article/classify'
 import ArticleNote from '../views/article/note'
 import ArticleList from '../views/article/list'
 import ArticleMarkdownDisplay from '../views/article/markdown'
+import ArticleFramework from '../views/article/framework'
 
 import Welcome from '../views/welcome/welcome'
 
@@ -93,6 +94,12 @@ export default new Router({
                 name: '文章内容',
                 component: ArticleMarkdownDisplay,
                 meta: { title: '文章内容', icon: 'article-markdown-display' }
+              },
+                {
+                path: 'article-framework',
+                name: '展示框架',
+                component: ArticleFramework,
+                meta: { title: '展示框架', icon: 'article-framework' }
               }]
             }
           ]

@@ -13,3 +13,5 @@ export const updateClassify = params => request('post',baseUrl + '/article/updat
 export const createArticle = params => request('post',baseUrl + '/article/create_article', params);
 
 export const getArticleList = params => request('get',baseUrl + '/article/list_info', params);
+
+export const getArticleContent = params => request('post',baseUrl + '/article/article_info', params);

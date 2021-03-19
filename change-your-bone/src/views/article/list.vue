@@ -33,7 +33,14 @@
       <el-table-column
         prop="article_id"
         label="ID"
-      />
+        align="center"
+      >
+        <template slot-scope="scope">
+          <div>
+            <a href="javascript:" @click="goToFramework(scope.row.article_id)">{{scope.row.article_id}}</a>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="article_classify"
         label="分类"
@@ -104,7 +111,16 @@
 
       switch_to_note() {
         this.$router.push('/article/article-notes')
-      }
+      },
+
+      goToFramework(article_id){
+       this.$router.push({
+          name: '展示框架',
+          params: {
+            article_id: article_id.toString()
+          }
+        })
+      },
     }
 	}
 

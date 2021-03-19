@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { getArticleContent } from '../../api/article'
+
 export default {
   name: "markdown",
   data () {
@@ -43,10 +45,24 @@ export default {
         preview: false // 预览
       },
 
-      value: "# 风太师叔\n\n![fengtaishishu.jpeg](http://192.168.1.118:8088/images/6778573061923934209.png)}```"
+      value: '',
+      // article_id: '6778573087333027841',
+      article_id: this.$route.params.article_id
     };
   },
+  mounted() {
+    this.showArticleContent();
+  },
   methods: {
+      // 获取 文章内容 信息
+      showArticleContent(){
+        let params = {
+          "article_id":this.article_id.toString()
+        }
+          getArticleContent(params).then((res) => {
+            this.value = res.article_content["markdown"];
+        });
+      },
   },
   computed: {
     prop() {
