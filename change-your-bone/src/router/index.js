@@ -6,7 +6,7 @@ import Container from '../container/Container'
 // import Dashboard from '../views/dashboard/index'
 import ArticleClassify from '../views/article/classify'
 import ArticleNote from '../views/article/note'
-import ArticleDisplay from '../views/article/display'
+import ArticleList from '../views/article/list'
 
 import Welcome from '../views/welcome/welcome'
 
@@ -83,7 +83,7 @@ export default new Router({
               {
                 path: 'article-list',
                 name: '文章列表',
-                component: ArticleDisplay,
+                component: ArticleList,
                 meta: { title: '文章列表', icon: 'article-list' }
               }]
             }

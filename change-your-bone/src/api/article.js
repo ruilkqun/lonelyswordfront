@@ -9,3 +9,5 @@ export const getClassifyList = params => request('get',baseUrl + '/article/class
 export const removeClassify = params => request('post',baseUrl + '/article/remove_classify', params);
 
 export const updateClassify = params => request('post',baseUrl + '/article/update_classify', params);
+
+export const createArticle = params => request('post',baseUrl + '/article/create_article', params);
