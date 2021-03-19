@@ -43,7 +43,7 @@ export default {
         preview: false // 预览
       },
 
-      value: "# 风太师叔\n\n![fengtaishishu.jpeg](http://192.168.1.118:8088/images/6778573061923934209.png) \n\n ```\n\n fn main() { \n\n println!(\"hi\") \n\n}```"
+      value: "# 风太师叔\n\n![fengtaishishu.jpeg](http://192.168.1.118:8088/images/6778573061923934209.png) \n\n"
     };
   },
   methods: {
