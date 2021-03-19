@@ -7,6 +7,7 @@ import Container from '../container/Container'
 import ArticleClassify from '../views/article/classify'
 import ArticleNote from '../views/article/note'
 import ArticleList from '../views/article/list'
+import ArticleMarkdownDisplay from '../views/article/markdown'
 
 import Welcome from '../views/welcome/welcome'
 
@@ -14,6 +15,7 @@ import User from '../views/user/user'
 
 import PlanList from '../views/plan/list'
 import PlanCharts from '../views/plan/charts'
+
 
 Vue.use(Router)
 
@@ -85,6 +87,12 @@ export default new Router({
                 name: '文章列表',
                 component: ArticleList,
                 meta: { title: '文章列表', icon: 'article-list' }
+              },
+              {
+                path: 'article-content',
+                name: '文章内容',
+                component: ArticleMarkdownDisplay,
+                meta: { title: '文章内容', icon: 'article-markdown-display' }
               }]
             }
           ]
