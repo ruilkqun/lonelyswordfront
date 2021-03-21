@@ -249,12 +249,24 @@
 
       // 获取账户信息
       showAccountList(){
-          getAccountList().then((res) => {
-            this.userList = res.data;
-            this.total = res.count;
-            this.pageSizes = this.userList.length;
-            this.listLoading = false;
-        });
+        var user;
+        let arr = document.cookie.split('; ')
+        for (let i = 0; i < arr.length; i++) {
+          let arr2 = arr[i].split('=')
+          if (arr2[0] === 'C-username') {
+            user = arr2[1]
+          }
+        }
+        let params = {
+          "token": window.sessionStorage.getItem('jwt').toString(),
+          "account": user.toString()
+        }
+        getAccountList(params).then((res) => {
+          this.userList = res.data;
+          this.total = res.count;
+          this.pageSizes = this.userList.length;
+          this.listLoading = false;
+      });
       },
 
       // 显示添加表单
