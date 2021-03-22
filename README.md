@@ -90,3 +90,8 @@ npm install highcharts --save
 ```
 npm install mavon-editor --save
 ```
+
+## 安装vuex
+```
+npm install vuex --save
+```

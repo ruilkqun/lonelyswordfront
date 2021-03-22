@@ -126,6 +126,11 @@ export default {
                 this.deleteCookie()
               }
               window.sessionStorage.setItem('jwt', res.token)
+              // let role = [];
+              // for (let v = 0; v < res.role.length; v ++ ){
+              //   role.push(res.role[v])
+              // }
+              window.sessionStorage.setItem('role',res.role)
               // alert(window.sessionStorage.getItem("jwt"))
               this.$router.push({path: this.redirect || '/'}).catch(() => {})
             } else {

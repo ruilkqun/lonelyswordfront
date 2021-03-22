@@ -23,6 +23,9 @@
             <el-menu-item index="/">
               首页
             </el-menu-item>
+            <el-menu-item index="/plan/plan-list">
+              清单
+            </el-menu-item>
           </el-menu>
 
           <div class="app-header-userinfo">
@@ -79,6 +82,8 @@ export default {
       this.$confirm('确认退出?', '提示', {})
         .then(() => {
           sessionStorage.removeItem('user')
+          sessionStorage.removeItem('jwt')
+          location.reload()
           this.$router.push('/login')
         })
         .catch(() => { })

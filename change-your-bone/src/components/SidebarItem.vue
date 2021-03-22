@@ -78,7 +78,7 @@ export default {
   },
 
   mounted () {
-    console.log('sidebar routes: ', this.routes)
+    console.log('sidebar routes: ', this.router)
   }
 }
 </script>
