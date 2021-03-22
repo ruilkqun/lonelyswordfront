@@ -54,8 +54,6 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog />
-
 
     <!--添加界面-->
     <el-dialog

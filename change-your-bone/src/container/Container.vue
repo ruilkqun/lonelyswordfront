@@ -34,14 +34,14 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>
-                  {{ username }}
-                </el-dropdown-item>
-                <el-dropdown-item>
+                <el-dropdown-item @click.native="setPersonalInfoVisible">
                   我的信息
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  设置
+                  密码修改
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  手机修改
                 </el-dropdown-item>
                 <el-dropdown-item divided
                 @click.native="logout">
@@ -58,6 +58,58 @@
           </template>
         </el-main>
       </el-container>
+
+<!--    个人信息-->
+    <div>
+      <template>
+        <section>
+                <el-dialog
+                title="个人信息"
+                :visible.sync="personalInfoVisible"
+                :show-close="true"
+                :close-on-click-modal="false"
+                :close-on-press-escape="false"
+                >
+                  <el-card align="middle" style="background-color: cornflowerblue">
+                        <img :src="userImg" class="userImg"/>
+                        <div>
+                          <span  style="font-size:25px; font-family: 宋体">ruilkyu</span>
+                        </div>
+                  </el-card>
+
+
+                  <el-card class="box-card " style="min-height: 200px;" align="middle">
+                    <div class="el-card__body mid" style="background-color: #87CECB">
+                      <div class="el-card__body mid">
+                        <span style="font-size:25px; font-family: 宋体">
+                          角色
+                        </span>
+                        <span style="font-size:25px; font-family: 宋体">
+                          admin_role
+                        </span>
+                      </div>
+                      <div class="el-card__body mid">
+                        <span style="font-size:25px; font-family: 宋体">
+                          手机
+                        </span>
+                        <span style="font-size:25px; font-family: 宋体">
+                          15201776595
+                        </span>
+                      </div>
+                      <div class="el-card__body mid">
+                        <span style="font-size:25px; font-family: 宋体">
+                          文章
+                        </span>
+                        <span style="font-size:25px; font-family: 宋体">
+                          10
+                        </span>
+                      </div>
+                    </div>
+                  </el-card>
+                </el-dialog>
+        </section>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -70,6 +122,7 @@ export default {
   },
   data () {
     return {
+      personalInfoVisible: false,
       username: '',
       isCollapse: false,
       userImg: "http://192.168.1.118:8088/images/6778573061923934209.png"
@@ -79,6 +132,9 @@ export default {
     toggleSideBar () {
       this.isCollapse = !this.isCollapse
       // alert(window.sessionStorage.getItem("jwt"))
+    },
+    setPersonalInfoVisible: function () {
+      this.personalInfoVisible = true
     },
     logout: function () {
       this.$confirm('确认退出?', '提示', {})
@@ -129,4 +185,17 @@ export default {
       border-radius: 50%;
   }
 
+  .el-card {
+    min-width: 380px;
+    margin-right: 20px;
+    transition: all .5s;
+  }
+  .el-card:hover{
+    margin-top: -5px;
+  }
+
+  .mid{
+    margin-top: 2%;
+    height: 10%;
+  }
 </style>
