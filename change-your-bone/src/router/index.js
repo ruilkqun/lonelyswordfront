@@ -3,7 +3,6 @@ import Router from 'vue-router'
 // import HelloWorld from '@/components/HelloWorld'
 import Login from '../views/login/login'
 import Container from '../container/Container'
-// import Dashboard from '../views/dashboard/index'
 import ArticleClassify from '../views/article/classify'
 import ArticleNote from '../views/article/note'
 import ArticleList from '../views/article/list'
@@ -120,6 +119,6 @@ export const asyncRouterMap = [
       path: 'admin',
       name: '用户',
       component: User,
-      meta: { title: '用户管理', icon: 'user', roles: ["admin_role","search_role"] }
+      meta: { title: '用户管理', icon: 'user', roles: ["admin_role"] }
   }
 ]

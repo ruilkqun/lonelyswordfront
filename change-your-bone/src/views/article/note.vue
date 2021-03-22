@@ -96,7 +96,9 @@ export default {
             "article_classify": this.model.classify.toString(),
             "article_title": this.model.title.toString(),
             "article_content": {"markdown":this.model.content.toString()},
-            "article_image": this.image_id
+            "article_image": this.image_id,
+            "token": window.sessionStorage.getItem('jwt').toString(),
+            "account": user.toString()
         };
 
         createArticle(params).then((res) => {

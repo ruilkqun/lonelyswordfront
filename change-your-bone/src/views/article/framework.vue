@@ -56,8 +56,19 @@ export default {
   methods: {
       // 获取 文章内容 信息
       showArticleContent(){
+        var user;
+        let arr = document.cookie.split('; ')
+        for (let i = 0; i < arr.length; i++) {
+          let arr2 = arr[i].split('=')
+          if (arr2[0] === 'C-username') {
+            user = arr2[1]
+          }
+        }
+
         let params = {
-          "article_id":this.article_id.toString()
+          "article_id":this.article_id.toString(),
+          "token": window.sessionStorage.getItem('jwt').toString(),
+          "account": user.toString()
         }
           getArticleContent(params).then((res) => {
             this.value = res.article_content["markdown"];

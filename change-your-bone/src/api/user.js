@@ -7,3 +7,5 @@ export const createAccount = params => request('post',baseUrl + '/user/create_us
 export const getAccountList = params => request('post',baseUrl + '/user/user_info', params);
 
 export const removeAccount = params => request('post',baseUrl + '/user/remove_user', params);
+
+export const changeAccountRole = params => request('put',baseUrl + '/user/change_account_role', params);

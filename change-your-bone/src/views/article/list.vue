@@ -101,11 +101,23 @@
 
       // 获取文章列表信息
       showArticleList(){
-          getArticleList().then((res) => {
-            this.articleList = res.data;
-            this.total = res.count;
-            this.pageSizes = this.articleList.length;
-            this.listLoading = false;
+        var user;
+        let arr = document.cookie.split('; ')
+        for (let i = 0; i < arr.length; i++) {
+          let arr2 = arr[i].split('=')
+          if (arr2[0] === 'C-username') {
+            user = arr2[1]
+          }
+        }
+        let params = {
+          "token": window.sessionStorage.getItem('jwt').toString(),
+          "account": user.toString()
+        }
+        getArticleList(params).then((res) => {
+          this.articleList = res.data;
+          this.total = res.count;
+          this.pageSizes = this.articleList.length;
+          this.listLoading = false;
         });
       },
 

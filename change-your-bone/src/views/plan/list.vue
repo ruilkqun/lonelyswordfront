@@ -280,11 +280,22 @@
         this.$confirm('是否创建该计划?', '提示', {
 					type: 'warning'
 				}).then(() => {
+          var user;
+          let arr = document.cookie.split('; ')
+          for (let i = 0; i < arr.length; i++) {
+            let arr2 = arr[i].split('=')
+            if (arr2[0] === 'C-username') {
+              user = arr2[1]
+            }
+          }
+
 				  let para = {
 				    "plan_account": this.addPlan.account.toString(),
             "plan_note": this.addPlan.note.toString(),
             "plan_schedule": this.addPlan.schedule.toString(),
-            "plan_status": this.addPlan.status.toString()
+            "plan_status": this.addPlan.status.toString(),
+            "token": window.sessionStorage.getItem('jwt').toString(),
+            "account": user.toString()
           };
 				  this.listLoading = true;
 				  createPlan(para).then((res) => {
@@ -347,9 +358,21 @@
 
       // 获取计划信息
       showPlanList(){
+        var user;
+        let arr = document.cookie.split('; ')
+        for (let i = 0; i < arr.length; i++) {
+          let arr2 = arr[i].split('=')
+          if (arr2[0] === 'C-username') {
+            user = arr2[1]
+          }
+        }
+
         let para = {
           "status": this.planStatusResult.toString(),
+          "token": window.sessionStorage.getItem('jwt').toString(),
+          "account": user.toString()
         };
+
         this.listLoading = true;
           getPlanList(para).then((res) => {
             this.planList = res.data;
@@ -372,10 +395,21 @@
         this.$confirm('是否更新进度?', '提示', {
 					type: 'warning'
 				}).then(() => {
+          var user;
+          let arr = document.cookie.split('; ')
+          for (let i = 0; i < arr.length; i++) {
+            let arr2 = arr[i].split('=')
+            if (arr2[0] === 'C-username') {
+              user = arr2[1]
+            }
+          }
+
 				  let para = {
 				    "plan_id": this.adjustPlan.id,
 				    "plan_account": this.adjustPlan.account.toString(),
-            "plan_schedule": this.adjustPlan.schedule.toString()
+            "plan_schedule": this.adjustPlan.schedule.toString(),
+            "token": window.sessionStorage.getItem('jwt').toString(),
+            "account": user.toString()
           };
 				  this.listLoading = true;
 				  adjustSchedule(para).then((res) => {

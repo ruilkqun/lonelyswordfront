@@ -238,7 +238,20 @@
 
       // 获取账户信息
       showClassifyList(){
-          getClassifyList().then((res) => {
+          var user;
+          let arr = document.cookie.split('; ')
+          for (let i = 0; i < arr.length; i++) {
+            let arr2 = arr[i].split('=')
+            if (arr2[0] === 'C-username') {
+              user = arr2[1]
+            }
+          }
+          let params = {
+            "token": window.sessionStorage.getItem('jwt').toString(),
+            "account": user.toString()
+          }
+
+          getClassifyList(params).then((res) => {
             this.articleClassifyList = res.data;
             this.total = res.count;
             this.pageSizes = this.articleClassifyList.length;
@@ -256,8 +269,19 @@
         this.$confirm('是否添加该分类?', '提示', {
 					type: 'warning'
 				}).then(() => {
+          var user;
+          let arr = document.cookie.split('; ')
+          for (let i = 0; i < arr.length; i++) {
+            let arr2 = arr[i].split('=')
+            if (arr2[0] === 'C-username') {
+              user = arr2[1]
+            }
+          }
+
 				  let para = {
-				    "classify_name": this.addClassify.classify_name.toString()
+				    "classify_name": this.addClassify.classify_name.toString(),
+            "token": window.sessionStorage.getItem('jwt').toString(),
+            "account": user.toString()
           };
 				  this.listLoading = true;
 				  createClassify(para).then((res) => {
@@ -298,8 +322,19 @@
         this.$confirm('是否删除该分类?', '提示', {
 					type: 'warning'
 				}).then(() => {
+          var user;
+          let arr = document.cookie.split('; ')
+          for (let i = 0; i < arr.length; i++) {
+            let arr2 = arr[i].split('=')
+            if (arr2[0] === 'C-username') {
+              user = arr2[1]
+            }
+          }
+
 				  let para = {
 				    "classify_id": this.removeClassify.classify_id,
+            "token": window.sessionStorage.getItem('jwt').toString(),
+            "account": user.toString()
           };
 				  this.listLoading = true;
 				  removeClassify(para).then((res) => {
@@ -346,9 +381,20 @@
         this.$confirm('是否更新该分类?', '提示', {
 					type: 'warning'
 				}).then(() => {
+          var user;
+          let arr = document.cookie.split('; ')
+          for (let i = 0; i < arr.length; i++) {
+            let arr2 = arr[i].split('=')
+            if (arr2[0] === 'C-username') {
+              user = arr2[1]
+            }
+          }
+
 				  let para = {
 				    "classify_id": this.updateClassify.classify_id,
-            "classify_name": this.updateClassify.classify_name
+            "classify_name": this.updateClassify.classify_name,
+            "token": window.sessionStorage.getItem('jwt').toString(),
+            "account": user.toString()
           };
 				  this.listLoading = true;
 				  updateClassify(para).then((res) => {

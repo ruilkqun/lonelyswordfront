@@ -82,8 +82,19 @@ export default {
   methods: {
     showSelectTimeResult: function () {
       // alert(this.selectTimeResult)
+      var user;
+      let arr = document.cookie.split('; ')
+      for (let i = 0; i < arr.length; i++) {
+        let arr2 = arr[i].split('=')
+        if (arr2[0] === 'C-username') {
+          user = arr2[1]
+        }
+      }
+
       let para = {
           "statistical_time": this.selectTimeResult.toString(),
+          "token": window.sessionStorage.getItem('jwt').toString(),
+          "account": user.toString()
       };
       // alert(para)
       this.listLoading = true;

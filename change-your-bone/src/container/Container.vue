@@ -10,8 +10,8 @@
         style="background-color: #87CECB">
           <div style="width: 60px; cursor: pointer;"
           @click.prevent="toggleSideBar">
-            <i v-show="!isCollapse" class="el-icon-d-arrow-left"></i>
-            <i v-show="isCollapse" class="el-icon-d-arrow-right"></i>
+            <i v-show="!isCollapse" class="el-icon-caret-left"></i>
+            <i v-show="isCollapse" class="el-icon-caret-right"></i>
           </div>
 
           <el-menu default-active="/"
@@ -20,11 +20,8 @@
                    mode="horizontal"
                    @select="handleSelect"
                    active-text-color="#409EFF">
-            <el-menu-item index="/">
-              首页
-            </el-menu-item>
-            <el-menu-item index="/plan/plan-list">
-              清单
+            <el-menu-item :index="this.$route.path">
+              {{ this.$route.name }}
             </el-menu-item>
           </el-menu>
 
@@ -32,12 +29,16 @@
             <el-dropdown trigger="hover"
             :hide-on-click="false">
               <span class="el-dropdown-link">
-                {{ username }}
+                <img :src="userImg" class="userImg"/>
+
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
-                  我的消息
+                  {{ username }}
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  我的信息
                 </el-dropdown-item>
                 <el-dropdown-item>
                   设置
@@ -70,7 +71,8 @@ export default {
   data () {
     return {
       username: '',
-      isCollapse: false
+      isCollapse: false,
+      userImg: "http://192.168.1.118:8088/images/6778573061923934209.png"
     }
   },
   methods: {
@@ -99,7 +101,15 @@ export default {
     }
   },
   mounted: function () {
-    let user = sessionStorage.getItem('user')
+    // let user = sessionStorage.getItem('user')
+    var user;
+    let arr = document.cookie.split('; ')
+    for (let i = 0; i < arr.length; i++) {
+      let arr2 = arr[i].split('=')
+      if (arr2[0] === 'C-username') {
+        user = arr2[1]
+      }
+    }
     if (user) {
       this.username = user
     }
@@ -108,5 +118,15 @@ export default {
 </script>
 
 <style scoped>
+  .userImg {
+      /*display: block;*/
+      /*box-sizing: content-box;*/
+      height: 46px;
+      width: 46px;
+      margin: 0 auto;
+      margin-bottom: 5px;
+      border: 3px solid white;
+      border-radius: 50%;
+  }
 
 </style>
