@@ -73,7 +73,7 @@
                   <el-card align="middle" style="background-color: cornflowerblue">
                         <img :src="userImg" class="userImg"/>
                         <div>
-                          <span  style="font-size:25px; font-family: 宋体">ruilkyu</span>
+                          <span  style="font-size:25px; font-family: 宋体">{{personalInfo.account}}</span>
                         </div>
                   </el-card>
 
@@ -85,7 +85,7 @@
                           角色
                         </span>
                         <span style="font-size:25px; font-family: 宋体">
-                          admin_role
+                          {{personalInfo.role}}
                         </span>
                       </div>
                       <div class="el-card__body mid">
@@ -93,7 +93,7 @@
                           手机
                         </span>
                         <span style="font-size:25px; font-family: 宋体">
-                          15201776595
+                          {{personalInfo.phone}}
                         </span>
                       </div>
                       <div class="el-card__body mid">
@@ -101,7 +101,7 @@
                           文章
                         </span>
                         <span style="font-size:25px; font-family: 宋体">
-                          10
+                          {{personalInfo.article_count}}
                         </span>
                       </div>
                     </div>
@@ -211,7 +211,7 @@
 
 <script>
 import Sidebar from '@/components/Sidebar'
-import { changePassword,changePhone } from "../api/user";
+import { changePassword,changePhone,getPersonalInfo } from "../api/user";
 export default {
   name: 'Container',
   components: {
@@ -225,6 +225,12 @@ export default {
       username: '',
       isCollapse: false,
       userImg: "http://192.168.1.118:8088/images/6778573061923934209.png",
+      personalInfo: {
+        "account": '',
+        "role": '',
+        "phone": '',
+        "article_count": ''
+      },
       changePasswordForm: {
         old_password: '',
         new_password: '',
@@ -238,6 +244,26 @@ export default {
     }
   },
   methods: {
+    personalTotalInfo: function () {
+      var user;
+      let arr = document.cookie.split('; ')
+      for (let i = 0; i < arr.length; i++) {
+        let arr2 = arr[i].split('=')
+        if (arr2[0] === 'C-username') {
+          user = arr2[1]
+        }
+      }
+      let params = {
+          "token": window.sessionStorage.getItem('jwt').toString(),
+          "account": user.toString()
+      };
+      getPersonalInfo(params).then((res) => {
+          this.personalInfo.account = res.account;
+          this.personalInfo.role = res.role;
+          this.personalInfo.phone = res.phone;
+          this.personalInfo.article_count = res.article_count;
+      })
+    },
     changePhoneCancel: function () {
       this.changePhoneVisible = false
     },
@@ -354,6 +380,8 @@ export default {
     }
   },
   mounted: function () {
+    this.personalTotalInfo()
+
     // let user = sessionStorage.getItem('user')
     var user;
     let arr = document.cookie.split('; ')

@@ -13,3 +13,5 @@ export const changeAccountRole = params => request('put',baseUrl + '/user/change
 export const changePassword = params => request('put',baseUrl + '/user/change_password', params);
 
 export const changePhone = params => request('put',baseUrl + '/user/change_phone', params);
+
+export const getPersonalInfo = params => request('post',baseUrl + '/user/personal_info', params);
