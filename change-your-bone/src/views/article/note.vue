@@ -68,12 +68,24 @@ export default {
 				this.image_id_map = [];
   },
   methods: {
-    // 获取账户信息
+    // 获取分类信息
     showClassifyList(){
-        getClassifyList().then((res) => {
-          for(var i=0;i<res.data.length;i++){
-          this.classify_data.push(res.data[i].classify_name.toString());
+      var user;
+      let arr = document.cookie.split('; ')
+      for (let i = 0; i < arr.length; i++) {
+        let arr2 = arr[i].split('=')
+        if (arr2[0] === 'C-username') {
+          user = arr2[1]
         }
+      }
+      let params = {
+        "token": window.sessionStorage.getItem('jwt').toString(),
+        "account": user.toString()
+      }
+      getClassifyList(params).then((res) => {
+          for(var i=0;i<res.data.length;i++){
+            this.classify_data.push(res.data[i].classify_name.toString());
+          }
       });
     },
 
@@ -81,7 +93,7 @@ export default {
     submit: function () {
         this.$confirm('是否创建该文章?', '提示', {
           type: 'warning'
-      }).then(() => {
+        }).then(() => {
         var user;
         let arr = document.cookie.split('; ')
         for (let i = 0; i < arr.length; i++) {
@@ -114,7 +126,6 @@ export default {
             });
           }
         })
-
       })
     },
     imgAdd(pos, $file) {
