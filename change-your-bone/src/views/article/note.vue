@@ -68,6 +68,17 @@ export default {
 				this.image_id_map = [];
   },
   methods: {
+    // 跳转到 展示页
+    goToFramework ()
+    {
+       this.$router.push({
+          name: '展示框架',
+          params: {
+            article_id: "".toString(),
+            article_title: this.model.title.toString()
+          }
+       })
+    },
     // 获取分类信息
     showClassifyList(){
       var user;
@@ -119,13 +130,14 @@ export default {
               'message': "创建文章成功",
               'type': 'success'
             });
+            this.goToFramework();
           } else {
             this.$message ({
               'message': "创建文章失败",
               'type': 'failure'
             });
           }
-        })
+        });
       })
     },
     imgAdd(pos, $file) {

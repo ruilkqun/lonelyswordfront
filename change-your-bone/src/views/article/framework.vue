@@ -47,7 +47,8 @@ export default {
 
       value: '',
       // article_id: '6778573087333027841',
-      article_id: this.$route.params.article_id
+      article_id: this.$route.params.article_id,
+      article_title: this.$route.params.article_title
     };
   },
   mounted() {
@@ -67,6 +68,7 @@ export default {
 
         let params = {
           "article_id":this.article_id.toString(),
+          "article_title":this.article_title.toString(),
           "token": window.sessionStorage.getItem('jwt').toString(),
           "account": user.toString()
         }

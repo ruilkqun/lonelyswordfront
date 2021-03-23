@@ -129,7 +129,8 @@
        this.$router.push({
           name: '展示框架',
           params: {
-            article_id: article_id.toString()
+            article_id: article_id.toString(),
+            article_title: "".toString()
           }
         })
       },
