@@ -120,6 +120,7 @@
             :show-close="true"
             :close-on-click-modal="false"
             :close-on-press-escape="false"
+            style="font-size:25px; font-family: 宋体"
             >
                 <el-form
                   ref="form"
@@ -163,11 +164,12 @@
       <template>
         <section>
             <el-dialog
-            title="密码修改"
+            title="手机修改"
             :visible.sync="changePhoneVisible"
             :show-close="true"
             :close-on-click-modal="false"
             :close-on-press-escape="false"
+            style="font-size:25px; font-family: 宋体"
             >
                 <el-form
                   ref="form"
