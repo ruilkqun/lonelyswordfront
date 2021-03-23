@@ -45,16 +45,16 @@
 
 <script>
 import { upLoadImg,deleteImg } from "../../api/image";
-import { getClassifyList,createArticle } from "../../api/article";
+import {getClassifyList, createArticle, getArticleContent} from "../../api/article";
 
 export default {
   name: "note",
   data () {
     return {
       model: {
-        title: '',
+        title: this.$route.params.article_title,
         content: '',
-        classify: '',
+        classify: ''
       },
       classify_data: [],
       image_id: [],
@@ -64,6 +64,7 @@ export default {
   },
   mounted() {
 				this.showClassifyList();
+				this.showArticleContent();
 				this.image_id = [];
 				this.image_id_map = [];
   },
@@ -97,6 +98,28 @@ export default {
           for(var i=0;i<res.data.length;i++){
             this.classify_data.push(res.data[i].classify_name.toString());
           }
+      });
+    },
+
+    // 获取 文章内容 信息
+    showArticleContent(){
+      var user;
+      let arr = document.cookie.split('; ')
+      for (let i = 0; i < arr.length; i++) {
+        let arr2 = arr[i].split('=')
+        if (arr2[0] === 'C-username') {
+          user = arr2[1]
+        }
+      }
+
+      let params = {
+        "article_id": "".toString(),
+        "article_title":this.model.title.toString(),
+        "token": window.sessionStorage.getItem('jwt').toString(),
+        "account": user.toString()
+      }
+        getArticleContent(params).then((res) => {
+          this.model.content = res.article_content["markdown"];
       });
     },
 

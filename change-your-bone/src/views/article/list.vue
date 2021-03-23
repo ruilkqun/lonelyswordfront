@@ -57,6 +57,13 @@
         prop="article_create_date"
         label="创建时间"
       />
+      <el-table-column
+        label="是否更新"
+      >
+        <template slot-scope="scope">
+            <el-button v-if="!scope.row.removeButtonVisible" type="primary" size="small" @click="goToNote(scope.row.article_title,scope.row.article_classify)">更新</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
 
@@ -131,6 +138,15 @@
           params: {
             article_id: article_id.toString(),
             article_title: "".toString()
+          }
+        })
+      },
+      goToNote(article_title,article_classify){
+       this.$router.push({
+          name: '小记',
+          params: {
+            article_title: article_title.toString(),
+            article_classify: article_classify.toString()
           }
         })
       },
