@@ -113,7 +113,7 @@
       >
 
         <el-form-item label="用户">
-          <el-input v-model="addPlan.account" />
+          <el-input v-model="addPlan.account" :disabled="true" />
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="addPlan.note" />
@@ -262,8 +262,21 @@
 		},
     mounted() {
 				this.showPlanList();
+				this.setAccount();
 			},
     methods: {
+      setAccount: function (){
+          var user;
+          let arr = document.cookie.split('; ')
+          for (let i = 0; i < arr.length; i++) {
+            let arr2 = arr[i].split('=')
+            if (arr2[0] === 'C-username') {
+              user = arr2[1]
+            }
+          }
+          this.addPlan.account = user
+          this.adjustPlan.account = user
+      },
       handleCurrentChange(val) {
 				this.page = val;
 				this.showPlanList();
