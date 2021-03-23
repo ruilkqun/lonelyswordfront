@@ -8,6 +8,7 @@
 
     <el-menu class="el-menu-vertical-demo"
              text-color="#FFF5EE"
+             background-color="#263445"
       :default-active="defaultActive"
       router
       :collapse="collapse">

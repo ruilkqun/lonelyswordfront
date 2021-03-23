@@ -54,9 +54,13 @@ body .el-table th.gutter {
     }
 
 
+
     .el-menu-item {
       background-color: #263445;
-      color: black;
+    }
+
+    .el-menu-item:hover {
+      background-color: #263445;
     }
 
     .el-menu-item.is-active {
@@ -64,14 +68,15 @@ body .el-table th.gutter {
       color: cornflowerblue;
     }
 
+
     .el-submenu {
       background-color: #263445;
-      color: red;
     }
 
     .el-submenu.is-active {
       border-left: 5px solid #263445;
     }
+
 
     &-logo {
       height: 60px;
