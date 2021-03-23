@@ -11,3 +11,5 @@ export const removeAccount = params => request('post',baseUrl + '/user/remove_us
 export const changeAccountRole = params => request('put',baseUrl + '/user/change_account_role', params);
 
 export const changePassword = params => request('put',baseUrl + '/user/change_password', params);
+
+export const changePhone = params => request('put',baseUrl + '/user/change_phone', params);

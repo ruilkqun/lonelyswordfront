@@ -40,7 +40,7 @@
                 <el-dropdown-item @click.native="setChangePasswordVisible">
                   密码修改
                 </el-dropdown-item>
-                <el-dropdown-item>
+                <el-dropdown-item @click.native="setChangePhoneVisible">
                   手机修改
                 </el-dropdown-item>
                 <el-dropdown-item divided
@@ -158,12 +158,60 @@
         </section>
       </template>
     </div>
+
+    <div>
+      <template>
+        <section>
+            <el-dialog
+            title="密码修改"
+            :visible.sync="changePhoneVisible"
+            :show-close="true"
+            :close-on-click-modal="false"
+            :close-on-press-escape="false"
+            >
+                <el-form
+                  ref="form"
+                  :model="changePhoneForm"
+                  label-width="90px"
+                  class="demo-ruleForm"
+                  >
+                  <el-form-item label="老手机" style="font-size:40px; font-family: 宋体">
+                    <el-input v-model="changePhoneForm.old_phone"  />
+                  </el-form-item>
+                  <el-form-item label="新手机" style="font-size:40px; font-family: 宋体">
+                    <el-input v-model="changePhoneForm.new_phone" />
+                  </el-form-item>
+                  <el-form-item label="确认新手机" style="font-size:40px; font-family: 宋体">
+                    <el-input v-model="changePhoneForm.confirm_new_phone" />
+                  </el-form-item>
+                </el-form>
+                <div
+                  slot="footer"
+                  class="dialog-footer"
+                >
+                  <el-button
+                    type="primary"
+                    @click.native="changePhoneCancel"
+                  >
+                    取消
+                  </el-button>
+                  <el-button
+                    type="primary"
+                    @click.native="changePhoneCommit"
+                  >
+                    提交
+                  </el-button>
+                </div>
+            </el-dialog>
+        </section>
+      </template>
+    </div>
   </div>
 </template>
 
 <script>
 import Sidebar from '@/components/Sidebar'
-import { changePassword } from "../api/user";
+import { changePassword,changePhone } from "../api/user";
 export default {
   name: 'Container',
   components: {
@@ -171,6 +219,7 @@ export default {
   },
   data () {
     return {
+      changePhoneVisible: false,
       changePasswordVisible: false,
       personalInfoVisible: false,
       username: '',
@@ -180,15 +229,64 @@ export default {
         old_password: '',
         new_password: '',
         confirm_new_password: ''
-      }
+      },
+      changePhoneForm: {
+        old_phone: '',
+        new_phone: '',
+        confirm_new_phone: ''
+      },
     }
   },
   methods: {
+    changePhoneCancel: function () {
+      this.changePhoneVisible = false
+    },
     changePasswordCancel: function () {
       this.changePasswordVisible = false
     },
+    setChangePhoneVisible: function () {
+      this.changePhoneVisible = true
+    },
     setChangePasswordVisible: function () {
       this.changePasswordVisible = true
+    },
+    changePhoneCommit: function () {
+      this.$confirm('确定修改手机？','提示',{
+        type:'warning'
+      }).then(() => {
+          var user;
+          let arr = document.cookie.split('; ')
+          for (let i = 0; i < arr.length; i++) {
+            let arr2 = arr[i].split('=')
+            if (arr2[0] === 'C-username') {
+              user = arr2[1]
+            }
+          }
+
+				  let params = {
+				    "old_phone": this.changePhoneForm.old_phone.toString(),
+            "new_phone": this.changePhoneForm.new_phone.toString(),
+            "confirm_new_phone": this.changePhoneForm.confirm_new_phone.toString(),
+            "token": window.sessionStorage.getItem('jwt').toString(),
+            "account": user.toString()
+          };
+
+          changePhone(params).then((res) => {
+            if (res.result === 'SUCCESS') {
+              this.$message({
+								message: '修改手机成功',
+								type: 'success'
+							});
+            }else {
+              this.$message({
+								message: '修改手机失败',
+								type: 'failure'
+							});
+            }
+            this.changePhoneVisible = false
+        })
+
+      })
     },
     changePasswordCommit: function () {
       this.$confirm('确定修改密码？','提示',{
