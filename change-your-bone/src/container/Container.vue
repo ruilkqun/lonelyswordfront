@@ -37,7 +37,7 @@
                 <el-dropdown-item @click.native="setPersonalInfoVisible">
                   我的信息
                 </el-dropdown-item>
-                <el-dropdown-item>
+                <el-dropdown-item @click.native="setChangePasswordVisible">
                   密码修改
                 </el-dropdown-item>
                 <el-dropdown-item>
@@ -110,11 +110,60 @@
         </section>
       </template>
     </div>
+
+    <div>
+      <template>
+        <section>
+            <el-dialog
+            title="密码修改"
+            :visible.sync="changePasswordVisible"
+            :show-close="true"
+            :close-on-click-modal="false"
+            :close-on-press-escape="false"
+            >
+                <el-form
+                  ref="form"
+                  :model="changePasswordForm"
+                  label-width="90px"
+                  class="demo-ruleForm"
+                  >
+                  <el-form-item label="老密码" style="font-size:40px; font-family: 宋体">
+                    <el-input v-model="changePasswordForm.old_password"  />
+                  </el-form-item>
+                  <el-form-item label="新密码" style="font-size:40px; font-family: 宋体">
+                    <el-input v-model="changePasswordForm.new_password" />
+                  </el-form-item>
+                  <el-form-item label="确认密码" style="font-size:40px; font-family: 宋体">
+                    <el-input v-model="changePasswordForm.confirm_new_password" />
+                  </el-form-item>
+                </el-form>
+                <div
+                  slot="footer"
+                  class="dialog-footer"
+                >
+                  <el-button
+                    type="primary"
+                    @click.native="changePasswordCancel"
+                  >
+                    取消
+                  </el-button>
+                  <el-button
+                    type="primary"
+                    @click.native="changePasswordCommit"
+                  >
+                    提交
+                  </el-button>
+                </div>
+            </el-dialog>
+        </section>
+      </template>
+    </div>
   </div>
 </template>
 
 <script>
 import Sidebar from '@/components/Sidebar'
+import { changePassword } from "../api/user";
 export default {
   name: 'Container',
   components: {
@@ -122,13 +171,63 @@ export default {
   },
   data () {
     return {
+      changePasswordVisible: false,
       personalInfoVisible: false,
       username: '',
       isCollapse: false,
-      userImg: "http://192.168.1.118:8088/images/6778573061923934209.png"
+      userImg: "http://192.168.1.118:8088/images/6778573061923934209.png",
+      changePasswordForm: {
+        old_password: '',
+        new_password: '',
+        confirm_new_password: ''
+      }
     }
   },
   methods: {
+    changePasswordCancel: function () {
+      this.changePasswordVisible = false
+    },
+    setChangePasswordVisible: function () {
+      this.changePasswordVisible = true
+    },
+    changePasswordCommit: function () {
+      this.$confirm('确定修改密码？','提示',{
+        type:'warning'
+      }).then(() => {
+          var user;
+          let arr = document.cookie.split('; ')
+          for (let i = 0; i < arr.length; i++) {
+            let arr2 = arr[i].split('=')
+            if (arr2[0] === 'C-username') {
+              user = arr2[1]
+            }
+          }
+
+				  let params = {
+				    "old_password": this.changePasswordForm.old_password.toString(),
+            "new_password": this.changePasswordForm.new_password.toString(),
+            "confirm_new_password": this.changePasswordForm.confirm_new_password.toString(),
+            "token": window.sessionStorage.getItem('jwt').toString(),
+            "account": user.toString()
+          };
+
+          changePassword(params).then((res) => {
+            if (res.result === 'SUCCESS') {
+              this.$message({
+								message: '修改密码成功',
+								type: 'success'
+							});
+            }else {
+              this.$message({
+								message: '修改密码失败',
+								type: 'failure'
+							});
+            }
+            this.changePasswordVisible = false
+        })
+
+      })
+    },
     toggleSideBar () {
       this.isCollapse = !this.isCollapse
       // alert(window.sessionStorage.getItem("jwt"))
