@@ -43,6 +43,9 @@
                 <el-dropdown-item @click.native="setChangePhoneVisible">
                   手机修改
                 </el-dropdown-item>
+                <el-dropdown-item @click.native="setChangePhotographVisible">
+                  头像上传
+                </el-dropdown-item>
                 <el-dropdown-item divided
                 @click.native="logout">
                   退出登录
@@ -208,12 +211,39 @@
         </section>
       </template>
     </div>
+    <div>
+      <template>
+        <section>
+            <el-dialog
+            title="头像修改"
+            :visible.sync="changePhotographVisible"
+            :show-close="true"
+            :close-on-click-modal="false"
+            :close-on-press-escape="false"
+            style="font-size:25px; font-family: 宋体"
+            >
+               <el-upload
+                 ref="clean"
+                  list-type="picture-card"
+                  action=""
+                  :http-request="imgAdd"
+                  :before-upload="beforeAvatarUpload">
+                  <i class="el-icon-plus"></i>
+               </el-upload>
+            </el-dialog>
+        </section>
+      </template>
+    </div>
   </div>
 </template>
 
 <script>
 import Sidebar from '@/components/Sidebar'
-import { changePassword,changePhone,getPersonalInfo } from "../api/user";
+import {changePassword, changePhone, getPersonalInfo} from "../api/user";
+import {upLoadUserImg,getUserImg} from "../api/image";
+
+
+
 export default {
   name: 'Container',
   components: {
@@ -221,6 +251,7 @@ export default {
   },
   data () {
     return {
+      changePhotographVisible: false,
       changePhoneVisible: false,
       changePasswordVisible: false,
       personalInfoVisible: false,
@@ -232,6 +263,9 @@ export default {
         "role": '',
         "phone": '',
         "article_count": ''
+      },
+      changePhotographForm: {
+
       },
       changePasswordForm: {
         old_password: '',
@@ -246,6 +280,79 @@ export default {
     }
   },
   methods: {
+    userImage() {
+        var user;
+        let arr = document.cookie.split('; ')
+        for (let i = 0; i < arr.length; i++) {
+          let arr2 = arr[i].split('=')
+          if (arr2[0] === 'C-username') {
+            user = arr2[1]
+          }
+        }
+        let params = {
+          "token": window.sessionStorage.getItem('jwt').toString(),
+          "account": user.toString()
+        }
+        getUserImg(params).then((res) => {
+          this.userImg = res.path
+          // alert(res.path)
+        })
+    },
+    uploadFile(file) {
+      return new Promise(function(resolve, reject) {
+      let reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = function() {
+          resolve(this.result)
+          }
+      })
+    },
+    imgAdd(item) {
+      let file = item.file
+      let base64Data = ''
+      this.uploadFile(file).then(res => {
+        // alert(res)
+          base64Data = res.split(',')[1]
+          var user;
+          let arr = document.cookie.split('; ')
+          for (let i = 0; i < arr.length; i++) {
+            let arr2 = arr[i].split('=')
+            if (arr2[0] === 'C-username') {
+              user = arr2[1]
+            }
+          }
+          let params = {
+            base64data: base64Data,
+            "token": window.sessionStorage.getItem('jwt').toString(),
+            "account": user.toString()
+          }
+
+          upLoadUserImg(params).then( res => {
+          if (res.result === 'SUCCESS') {
+              this.userImg = res.path;
+              this.$message({
+                message: '写入图片成功',
+                type: 'success'
+              });
+          }else {
+              this.$message({
+                message: '写入图片失败',
+                type: 'failure'
+              });
+          }
+          this.$refs.clean.clearFiles()
+          this.changePhotographVisible = false
+        })
+      })
+    },
+    // 图片上传前验证
+    beforeAvatarUpload (file) {
+      const isLt2M = file.size / 1024 / 1024 < 10
+      if (!isLt2M) {
+       this.$message.error('上传头像图片大小不能超过 10MB!')
+      }
+      return isLt2M
+    },
     personalTotalInfo: function () {
       var user;
       let arr = document.cookie.split('; ')
@@ -271,6 +378,9 @@ export default {
     },
     changePasswordCancel: function () {
       this.changePasswordVisible = false
+    },
+    setChangePhotographVisible: function () {
+      this.changePhotographVisible = true
     },
     setChangePhoneVisible: function () {
       this.changePhoneVisible = true
@@ -383,6 +493,7 @@ export default {
   },
   mounted: function () {
     this.personalTotalInfo()
+    this.userImage()
 
     // let user = sessionStorage.getItem('user')
     var user;
