@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "markdown",
+  name: 'markdown',
   data () {
     return {
       toolbars: {
@@ -43,14 +43,14 @@ export default {
         preview: false // 预览
       },
 
-      value: "# 风太师叔\n\n![fengtaishishu.jpeg](http://192.168.1.118:8088/images/6778573061923934209.png)}```"
-    };
+      value: '# 风太师叔\n\n![fengtaishishu.jpeg](http://192.168.1.118:8088/images/6778573061923934209.png)}```'
+    }
   },
   methods: {
   },
   computed: {
-    prop() {
-      let data = {
+    prop () {
+      return {
         // 单双栏模式
         subfield: false,
         // edit: 默认展示编辑区域, preview：默认展示预览区域
@@ -60,9 +60,8 @@ export default {
         scrollStyle: false,
         // 边框
         boxShadow: false,
-        codeStyle:'googlecode',//主题
+        codeStyle: 'googlecode'// 主题
       }
-      return data
     }
   }
 }

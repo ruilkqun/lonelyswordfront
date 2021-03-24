@@ -8,7 +8,6 @@
           </el-col>
         </el-form-item>
 
-
         <el-form-item label="所属分类">
           <el-select
             v-model="model.classify"
@@ -44,11 +43,11 @@
 </template>
 
 <script>
-import { upLoadImg,deleteImg } from "../../api/image";
-import {getClassifyList, createArticle, getArticleContent} from "../../api/article";
+import { upLoadImg, deleteImg } from '../../api/image'
+import {getClassifyList, createArticle, getArticleContent} from '../../api/article'
 
 export default {
-  name: "note",
+  name: 'note',
   data () {
     return {
       model: {
@@ -59,30 +58,29 @@ export default {
       classify_data: [],
       image_id: [],
       image_id_map: [],
-      current_image_id: 0,
+      current_image_id: 0
     }
   },
-  mounted() {
-				this.showClassifyList();
-				this.showArticleContent();
-				this.image_id = [];
-				this.image_id_map = [];
+  mounted () {
+    this.showClassifyList()
+    this.showArticleContent()
+    this.image_id = []
+    this.image_id_map = []
   },
   methods: {
     // 跳转到 展示页
-    goToFramework ()
-    {
-       this.$router.push({
-          name: '展示框架',
-          params: {
-            article_id: "".toString(),
-            article_title: this.model.title.toString()
-          }
-       })
+    goToFramework () {
+      this.$router.push({
+        name: '展示框架',
+        params: {
+          article_id: ''.toString(),
+          article_title: this.model.title.toString()
+        }
+      })
     },
     // 获取分类信息
-    showClassifyList(){
-      var user;
+    showClassifyList () {
+      var user
       let arr = document.cookie.split('; ')
       for (let i = 0; i < arr.length; i++) {
         let arr2 = arr[i].split('=')
@@ -91,19 +89,19 @@ export default {
         }
       }
       let params = {
-        "token": window.sessionStorage.getItem('jwt').toString(),
-        "account": user.toString()
+        'token': window.sessionStorage.getItem('jwt').toString(),
+        'account': user.toString()
       }
       getClassifyList(params).then((res) => {
-          for(var i=0;i<res.data.length;i++){
-            this.classify_data.push(res.data[i].classify_name.toString());
-          }
-      });
+        for (var i = 0; i < res.data.length; i++) {
+          this.classify_data.push(res.data[i].classify_name.toString())
+        }
+      })
     },
 
     // 获取 文章内容 信息
-    showArticleContent(){
-      var user;
+    showArticleContent () {
+      var user
       let arr = document.cookie.split('; ')
       for (let i = 0; i < arr.length; i++) {
         let arr2 = arr[i].split('=')
@@ -113,22 +111,21 @@ export default {
       }
 
       let params = {
-        "article_id": "".toString(),
-        "article_title":this.model.title.toString(),
-        "token": window.sessionStorage.getItem('jwt').toString(),
-        "account": user.toString()
+        'article_id': ''.toString(),
+        'article_title': this.model.title.toString(),
+        'token': window.sessionStorage.getItem('jwt').toString(),
+        'account': user.toString()
       }
-        getArticleContent(params).then((res) => {
-          this.model.content = res.article_content["markdown"];
-      });
+      getArticleContent(params).then((res) => {
+        this.model.content = res.article_content['markdown']
+      })
     },
 
-
     submit: function () {
-        this.$confirm('是否创建该文章?', '提示', {
-          type: 'warning'
-        }).then(() => {
-        var user;
+      this.$confirm('是否创建该文章?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        var user
         let arr = document.cookie.split('; ')
         for (let i = 0; i < arr.length; i++) {
           let arr2 = arr[i].split('=')
@@ -138,61 +135,64 @@ export default {
         }
 
         let params = {
-          	"article_account": user.toString(),
-            "article_classify": this.model.classify.toString(),
-            "article_title": this.model.title.toString(),
-            "article_content": {"markdown":this.model.content.toString()},
-            "article_image": this.image_id,
-            "token": window.sessionStorage.getItem('jwt').toString(),
-            "account": user.toString()
-        };
+          'article_account': user.toString(),
+          'article_classify': this.model.classify.toString(),
+          'article_title': this.model.title.toString(),
+          'article_content': {'markdown': this.model.content.toString()},
+          'article_image': this.image_id,
+          'token': window.sessionStorage.getItem('jwt').toString(),
+          'account': user.toString()
+        }
 
         createArticle(params).then((res) => {
           if (res.result === 'SUCCESS') {
-            this.$message ({
-              'message': "创建文章成功",
+            this.$message({
+              'message': '创建文章成功',
               'type': 'success'
-            });
-            this.goToFramework();
+            })
+            this.goToFramework()
           } else {
-            this.$message ({
-              'message': "创建文章失败",
+            this.$message({
+              'message': '创建文章失败',
               'type': 'failure'
-            });
+            })
           }
-        });
+        })
       })
     },
-    imgAdd(pos, $file) {
-      const base64Data = $file.miniurl.replace(/^data:image\/\w+;base64,/, "");
+    imgAdd (pos, $file) {
+      const base64Data = $file.miniurl.replace(/^data:image\/\w+;base64,/, '')
       let params = { base64data: base64Data }
 
-
-      upLoadImg(params).then( res => {
+      upLoadImg(params).then(res => {
         if (res.result === 'SUCCESS') {
-            let image_pos =  pos.toString();
-            let image_pos_id_map = {[image_pos]: res.image_id};
-            this.image_id.push(res.image_id);
-            this.image_id_map.push(image_pos_id_map);
-            this.$message({
-              message: '写入图片成功',
-              type: 'success'
-            });
-        }else {
-            this.$message({
-              message: '写入图片失败',
-              type: 'failure'
-            });
+          // eslint-disable-next-line camelcase
+          let image_pos = pos.toString()
+          // eslint-disable-next-line camelcase
+          let image_pos_id_map = {[image_pos]: res.image_id}
+          this.image_id.push(res.image_id)
+          this.image_id_map.push(image_pos_id_map)
+          this.$message({
+            message: '写入图片成功',
+            type: 'success'
+          })
+        } else {
+          this.$message({
+            message: '写入图片失败',
+            type: 'failure'
+          })
         }
-        this.$refs.md.$img2Url(pos, res.path);
+        this.$refs.md.$img2Url(pos, res.path)
       })
     },
 
-    imgDel(pos) {
+    imgDel (pos) {
       // delete this.img_file[pos];
       // alert(pos.toString().split(',')[0].toString().split('/')[4].toString().split('.')[0])
-      var current_image_id = "".toString()
-      current_image_id = pos.toString().split(',')[0].toString().split('/')[4].toString().split('.')[0].toString();
+      // eslint-disable-next-line camelcase
+      var current_image_id = ''.toString()
+      // eslint-disable-next-line camelcase
+      current_image_id = pos.toString().split(',')[0].toString().split('/')[4].toString().split('.')[0].toString()
       // var current_image_id = "".toString();
       // for (let i = 0; i < this.image_id_map.length; i++) {
       //     if (this.image_id_map[i][pos] !== '') {
@@ -213,22 +213,22 @@ export default {
       // }
 
       // alert(current_image_id)
-      let params = { "image_id": current_image_id };
+      let params = { 'image_id': current_image_id }
       // alert(params["image_id"])
-      deleteImg(params).then( res => {
+      deleteImg(params).then(res => {
         if (res.result === 'SUCCESS') {
-            this.$message({
-              message: '删除图片成功',
-              type: 'success'
-            });
-        }else {
-            this.$message({
-              message: '删除图片失败',
-              type: 'failure'
-            });
+          this.$message({
+            message: '删除图片成功',
+            type: 'success'
+          })
+        } else {
+          this.$message({
+            message: '删除图片失败',
+            type: 'failure'
+          })
         }
       })
-    },
+    }
   }
 }
 </script>

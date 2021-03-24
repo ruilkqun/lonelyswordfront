@@ -16,14 +16,13 @@ import User from '../views/user/user'
 import PlanList from '../views/plan/list'
 import PlanCharts from '../views/plan/charts'
 
-
 Vue.use(Router)
 
 export const constantRouterMap = [
   {
-      path: '/login',
-      name: 'Login',
-      component: Login
+    path: '/login',
+    name: 'Login',
+    component: Login
   },
   {
     path: '/',
@@ -56,7 +55,7 @@ export const constantRouterMap = [
             path: 'plan-charts',
             name: '图表',
             component: PlanCharts,
-            meta: { title: '图表', icon: 'plan-charts'}
+            meta: { title: '图表', icon: 'plan-charts' }
           }
         ]
       },
@@ -84,31 +83,30 @@ export const constantRouterMap = [
             component: Container,
             meta: { title: '展示', icon: 'article-display' },
             children: [
-            {
-              path: 'article-list',
-              name: '文章列表',
-              component: ArticleList,
-              meta: { title: '文章列表', icon: 'article-list' }
-            },
-            {
-              path: 'article-content',
-              name: '文章内容',
-              component: ArticleMarkdownDisplay,
-              meta: { title: '文章内容', icon: 'article-markdown-display' }
-            },
-            {
-              path: 'article-framework',
-              name: '展示框架',
-              component: ArticleFramework,
-              meta: { title: '展示框架', icon: 'article-framework' }
-            }]
+              {
+                path: 'article-list',
+                name: '文章列表',
+                component: ArticleList,
+                meta: { title: '文章列表', icon: 'article-list' }
+              },
+              {
+                path: 'article-content',
+                name: '文章内容',
+                component: ArticleMarkdownDisplay,
+                meta: { title: '文章内容', icon: 'article-markdown-display' }
+              },
+              {
+                path: 'article-framework',
+                name: '展示框架',
+                component: ArticleFramework,
+                meta: { title: '展示框架', icon: 'article-framework' }
+              }]
           }
         ]
-      },
+      }
     ]
-  },
+  }
 ]
-
 
 export default new Router({
   routes: constantRouterMap
@@ -116,9 +114,9 @@ export default new Router({
 
 export const asyncRouterMap = [
   {
-      path: 'admin',
-      name: '用户',
-      component: User,
-      meta: { title: '用户管理', icon: 'user', roles: ["admin_role"] }
+    path: 'admin',
+    name: '用户',
+    component: User,
+    meta: { title: '用户管理', icon: 'user', roles: ['admin_role'] }
   }
 ]

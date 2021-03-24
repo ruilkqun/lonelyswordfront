@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import { getArticleContent } from '../../api/article'
+import {getArticleContent} from '../../api/article'
 
 export default {
-  name: "markdown",
+  name: 'markdown',
   data () {
     return {
       toolbars: {
@@ -49,37 +49,37 @@ export default {
       // article_id: '6778573087333027841',
       article_id: this.$route.params.article_id,
       article_title: this.$route.params.article_title
-    };
+    }
   },
-  mounted() {
-    this.showArticleContent();
+  mounted () {
+    this.showArticleContent()
   },
   methods: {
-      // 获取 文章内容 信息
-      showArticleContent(){
-        var user;
-        let arr = document.cookie.split('; ')
-        for (let i = 0; i < arr.length; i++) {
-          let arr2 = arr[i].split('=')
-          if (arr2[0] === 'C-username') {
-            user = arr2[1]
-          }
+    // 获取 文章内容 信息
+    showArticleContent () {
+      var user
+      let arr = document.cookie.split('; ')
+      for (let i = 0; i < arr.length; i++) {
+        let arr2 = arr[i].split('=')
+        if (arr2[0] === 'C-username') {
+          user = arr2[1]
         }
+      }
 
-        let params = {
-          "article_id":this.article_id.toString(),
-          "article_title":this.article_title.toString(),
-          "token": window.sessionStorage.getItem('jwt').toString(),
-          "account": user.toString()
-        }
-          getArticleContent(params).then((res) => {
-            this.value = res.article_content["markdown"];
-        });
-      },
+      let params = {
+        'article_id': this.article_id.toString(),
+        'article_title': this.article_title.toString(),
+        'token': window.sessionStorage.getItem('jwt').toString(),
+        'account': user.toString()
+      }
+      getArticleContent(params).then((res) => {
+        this.value = res.article_content['markdown']
+      })
+    }
   },
   computed: {
-    prop() {
-      let data = {
+    prop () {
+      return {
         // 单双栏模式
         subfield: false,
         // edit: 默认展示编辑区域, preview：默认展示预览区域
@@ -89,9 +89,8 @@ export default {
         scrollStyle: false,
         // 边框
         boxShadow: false,
-        codeStyle:'googlecode',//主题
+        codeStyle: 'googlecode'// 主题
       }
-      return data
     }
   }
 }

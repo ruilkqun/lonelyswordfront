@@ -1,17 +1,15 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 
-Vue.use(Vuex)
-
 import permission from './modules/permission'
-import getters from "./getters";
+import getters from './getters'
+
+Vue.use(Vuex)
 const store = new Vuex.Store({
   modules: {
     permission
   },
   getters
 })
-
-
 
 export default store

@@ -66,7 +66,6 @@
       </el-table-column>
     </el-table>
 
-
     <!--工具条-->
     <el-col
       :span="24"
@@ -84,74 +83,76 @@
 </template>
 
 <script>
-  import { getArticleList } from "../../api/article";
+import { getArticleList } from '../../api/article'
 
-  export default {
-    name: 'article-list',
-		data() {
-			return {
-			  articleList: [],
-				total: 0,
-				page: 1,
-        pageSizes: 1,
-        listLoading: false,
-			}
-		},
-    mounted() {
-				this.showArticleList();
-			},
-    methods: {
-      handleCurrentChange(val) {
-				this.page = val;
-				this.showArticleList();
-			},
-
-      // 获取文章列表信息
-      showArticleList(){
-        var user;
-        let arr = document.cookie.split('; ')
-        for (let i = 0; i < arr.length; i++) {
-          let arr2 = arr[i].split('=')
-          if (arr2[0] === 'C-username') {
-            user = arr2[1]
-          }
-        }
-        let params = {
-          "token": window.sessionStorage.getItem('jwt').toString(),
-          "account": user.toString()
-        }
-        getArticleList(params).then((res) => {
-          this.articleList = res.data;
-          this.total = res.count;
-          this.pageSizes = this.articleList.length;
-          this.listLoading = false;
-        });
-      },
-
-      switch_to_note() {
-        this.$router.push('/article/article-notes')
-      },
-
-      goToFramework(article_id){
-       this.$router.push({
-          name: '展示框架',
-          params: {
-            article_id: article_id.toString(),
-            article_title: "".toString()
-          }
-        })
-      },
-      goToNote(article_title,article_classify){
-       this.$router.push({
-          name: '小记',
-          params: {
-            article_title: article_title.toString(),
-            article_classify: article_classify.toString()
-          }
-        })
-      },
+export default {
+  name: 'article-list',
+  data () {
+    return {
+      articleList: [],
+      total: 0,
+      page: 1,
+      pageSizes: 1,
+      listLoading: false
     }
-	}
+  },
+  mounted () {
+    this.showArticleList()
+  },
+  methods: {
+    handleCurrentChange (val) {
+      this.page = val
+      this.showArticleList()
+    },
+
+    // 获取文章列表信息
+    showArticleList () {
+      var user
+      let arr = document.cookie.split('; ')
+      for (let i = 0; i < arr.length; i++) {
+        let arr2 = arr[i].split('=')
+        if (arr2[0] === 'C-username') {
+          user = arr2[1]
+        }
+      }
+      let params = {
+        'token': window.sessionStorage.getItem('jwt').toString(),
+        'account': user.toString()
+      }
+      getArticleList(params).then((res) => {
+        this.articleList = res.data
+        this.total = res.count
+        this.pageSizes = this.articleList.length
+        this.listLoading = false
+      })
+    },
+
+    switch_to_note () {
+      this.$router.push('/article/article-notes')
+    },
+
+    // eslint-disable-next-line camelcase
+    goToFramework (article_id) {
+      this.$router.push({
+        name: '展示框架',
+        params: {
+          article_id: article_id.toString(),
+          article_title: ''.toString()
+        }
+      })
+    },
+    // eslint-disable-next-line camelcase
+    goToNote (article_title, article_classify) {
+      this.$router.push({
+        name: '小记',
+        params: {
+          article_title: article_title.toString(),
+          article_classify: article_classify.toString()
+        }
+      })
+    }
+  }
+}
 
 </script>
 

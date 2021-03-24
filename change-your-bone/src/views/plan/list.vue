@@ -96,7 +96,6 @@
 
     <el-dialog />
 
-
     <!--添加界面-->
     <el-dialog
       title="添加"
@@ -143,7 +142,6 @@
         </el-button>
       </div>
     </el-dialog>
-
 
     <!--编辑进度界面-->
     <el-dialog
@@ -204,174 +202,95 @@
 </template>
 
 <script>
-  import { getPlanList,createPlan,adjustSchedule } from '../../api/plan';
+import { getPlanList, createPlan, adjustSchedule } from '../../api/plan'
 
-  export default {
-    name: 'list',
-		data() {
-			return {
-			  //计划状态 选中列
-			  planStatusResult: [],
-        //计划状态 选择列
-			  planStatusSelect: ['进行中','已完成'],
-        //展示计划列表
-        planList: [],
-			  addPlan: {
-			    account: '',
-          note: '',
-          schedule: '',
-          status: '进行中'
-        },
-        adjustPlan: {
-			    id: 0,
-			    account: '',
-          schedule: ''
-        },
-				total: 0,
-				page: 1,
-        pageSizes: 1,
-        listLoading: false,
-        addFormVisible: false, // 添加界面是否显示
-        adjustButtonVisible: false, // 进度调节按钮是否显示
-        adjustFormVisible: false, // 进度调节表单是否显示
-        // 添加界面规则设定
-				addFormRules: {
-					account: [
-						{
-						  required: true,
-              message: '请输入账号',
-              trigger: 'blur'
-						}
-					],
-          note: [
-            {
-              required: true,
-              message: '请输入备注',
-              trigger: 'blur'
-            }
-          ],
-          schedule: [
-            {
-              required: true,
-              message: '请输入进度%',
-              trigger: 'blur'
-            }
-          ],
-				}
-			}
-		},
-    mounted() {
-				this.showPlanList();
-				this.setAccount();
-			},
-    methods: {
-      setAccount: function (){
-          var user;
-          let arr = document.cookie.split('; ')
-          for (let i = 0; i < arr.length; i++) {
-            let arr2 = arr[i].split('=')
-            if (arr2[0] === 'C-username') {
-              user = arr2[1]
-            }
+export default {
+  name: 'list',
+  data () {
+    return {
+      // 计划状态 选中列
+      planStatusResult: [],
+      // 计划状态 选择列
+      planStatusSelect: ['进行中', '已完成'],
+      // 展示计划列表
+      planList: [],
+      addPlan: {
+        account: '',
+        note: '',
+        schedule: '',
+        status: '进行中'
+      },
+      adjustPlan: {
+        id: 0,
+        account: '',
+        schedule: ''
+      },
+      total: 0,
+      page: 1,
+      pageSizes: 1,
+      listLoading: false,
+      addFormVisible: false, // 添加界面是否显示
+      adjustButtonVisible: false, // 进度调节按钮是否显示
+      adjustFormVisible: false, // 进度调节表单是否显示
+      // 添加界面规则设定
+      addFormRules: {
+        account: [
+          {
+            required: true,
+            message: '请输入账号',
+            trigger: 'blur'
           }
-          this.addPlan.account = user
-          this.adjustPlan.account = user
-      },
-      handleCurrentChange(val) {
-				this.page = val;
-				this.showPlanList();
-			},
-
-
-      // 显示添加表单
-      showAddForm() {
-				this.addFormVisible = true;
-			},
-
-      // 开始添加
-			addSubmit: function () {
-        this.$confirm('是否创建该计划?', '提示', {
-					type: 'warning'
-				}).then(() => {
-          var user;
-          let arr = document.cookie.split('; ')
-          for (let i = 0; i < arr.length; i++) {
-            let arr2 = arr[i].split('=')
-            if (arr2[0] === 'C-username') {
-              user = arr2[1]
-            }
+        ],
+        note: [
+          {
+            required: true,
+            message: '请输入备注',
+            trigger: 'blur'
           }
-
-				  let para = {
-				    "plan_account": this.addPlan.account.toString(),
-            "plan_note": this.addPlan.note.toString(),
-            "plan_schedule": this.addPlan.schedule.toString(),
-            "plan_status": this.addPlan.status.toString(),
-            "token": window.sessionStorage.getItem('jwt').toString(),
-            "account": user.toString()
-          };
-				  this.listLoading = true;
-				  createPlan(para).then((res) => {
-				    // alert(res.result)
-            if (res.result === 'SUCCESS') {
-              this.$message({
-								message: '创建计划成功',
-								type: 'success'
-							});
-            }else {
-              this.$message({
-								message: '创建计划失败',
-								type: 'failure'
-							});
-            }
-            this.showPlanList();
-            this.addFormVisible = false;
-            this.listLoading = false;
-        })
-			})
-      },
-
-      // 退出添加
-      addBack: function (){
-        this.listLoading = false;
-        this.addFormVisible = false;
-      },
-
-
-      // 改变 状态 选择
-      changeStatusSelect(val) {
-        if (!val.includes('全选') && val.length === this.planStatusSelect.length) {
-          this.planStatusResult.unshift('全选')
-        } else if (val.includes('全选') && (val.length - 1) < this.planStatusSelect.length) {
-          this.planStatusResult = this.planStatusResult.filter((item) => {
-            return item !== '全选'
-          })
+        ],
+        schedule: [
+          {
+            required: true,
+            message: '请输入进度%',
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
+  },
+  mounted () {
+    this.showPlanList()
+    this.setAccount()
+  },
+  methods: {
+    setAccount: function () {
+      var user
+      let arr = document.cookie.split('; ')
+      for (let i = 0; i < arr.length; i++) {
+        let arr2 = arr[i].split('=')
+        if (arr2[0] === 'C-username') {
+          user = arr2[1]
         }
-      },
+      }
+      this.addPlan.account = user
+      this.adjustPlan.account = user
+    },
+    handleCurrentChange (val) {
+      this.page = val
+      this.showPlanList()
+    },
 
-      // 移除 状态 选择
-      removeStatusSelect(val) {
-        if (val === '全选'){
-          this.planStatusResult = []
-        }
-      },
+    // 显示添加表单
+    showAddForm () {
+      this.addFormVisible = true
+    },
 
-      // 选择 所有 状态
-      allStatusSelect() {
-        if (this.planStatusResult.length < this.planStatusSelect.length) {
-          this.planStatusResult = []
-          this.planStatusSelect.map((item) => {
-            this.planStatusResult.push(item)
-          })
-          this.planStatusResult.unshift('全选')
-        } else {
-          this.planStatusResult = []
-        }
-      },
-
-      // 获取计划信息
-      showPlanList(){
-        var user;
+    // 开始添加
+    addSubmit: function () {
+      this.$confirm('是否创建该计划?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        var user
         let arr = document.cookie.split('; ')
         for (let i = 0; i < arr.length; i++) {
           let arr2 = arr[i].split('=')
@@ -381,77 +300,153 @@
         }
 
         let para = {
-          "status": this.planStatusResult.toString(),
-          "token": window.sessionStorage.getItem('jwt').toString(),
-          "account": user.toString()
-        };
-
-        this.listLoading = true;
-          getPlanList(para).then((res) => {
-            this.planList = res.data;
-            this.total = res.count;
-            this.pageSizes = this.planList.length;
-            this.listLoading = false;
-        });
-      },
-
-      // 调节 进度 辅助函数
-      adjustItem: function (plan_id,plan_account){
-        this.adjustFormVisible = true;
-        this.adjustPlan.id = plan_id;
-        this.adjustPlan.account = plan_account;
-      },
-
-
-      // 开始 调节 进度
-			adjustSubmit: function () {
-        this.$confirm('是否更新进度?', '提示', {
-					type: 'warning'
-				}).then(() => {
-          var user;
-          let arr = document.cookie.split('; ')
-          for (let i = 0; i < arr.length; i++) {
-            let arr2 = arr[i].split('=')
-            if (arr2[0] === 'C-username') {
-              user = arr2[1]
-            }
+          'plan_account': this.addPlan.account.toString(),
+          'plan_note': this.addPlan.note.toString(),
+          'plan_schedule': this.addPlan.schedule.toString(),
+          'plan_status': this.addPlan.status.toString(),
+          'token': window.sessionStorage.getItem('jwt').toString(),
+          'account': user.toString()
+        }
+        this.listLoading = true
+        createPlan(para).then((res) => {
+          // alert(res.result)
+          if (res.result === 'SUCCESS') {
+            this.$message({
+              message: '创建计划成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '创建计划失败',
+              type: 'failure'
+            })
           }
-
-				  let para = {
-				    "plan_id": this.adjustPlan.id,
-				    "plan_account": this.adjustPlan.account.toString(),
-            "plan_schedule": this.adjustPlan.schedule.toString(),
-            "token": window.sessionStorage.getItem('jwt').toString(),
-            "account": user.toString()
-          };
-				  this.listLoading = true;
-				  adjustSchedule(para).then((res) => {
-				    // alert(res.result)
-            if (res.result === 'SUCCESS') {
-              this.$message({
-								message: '调节进度成功',
-								type: 'success'
-							});
-            }else {
-              this.$message({
-								message: '调节进度失败',
-								type: 'failure'
-							});
-            }
-            this.showPlanList();
-            this.adjustFormVisible = false;
-            this.listLoading = false;
+          this.showPlanList()
+          this.addFormVisible = false
+          this.listLoading = false
         })
-			})
-      },
+      })
+    },
 
-      // 退出 调节 进度
-      adjustBack: function (){
-        this.listLoading = false;
-        this.adjustFormVisible = false;
-      },
+    // 退出添加
+    addBack: function () {
+      this.listLoading = false
+      this.addFormVisible = false
+    },
+
+    // 改变 状态 选择
+    changeStatusSelect (val) {
+      if (!val.includes('全选') && val.length === this.planStatusSelect.length) {
+        this.planStatusResult.unshift('全选')
+      } else if (val.includes('全选') && (val.length - 1) < this.planStatusSelect.length) {
+        this.planStatusResult = this.planStatusResult.filter((item) => {
+          return item !== '全选'
+        })
+      }
+    },
+
+    // 移除 状态 选择
+    removeStatusSelect (val) {
+      if (val === '全选') {
+        this.planStatusResult = []
+      }
+    },
+
+    // 选择 所有 状态
+    allStatusSelect () {
+      if (this.planStatusResult.length < this.planStatusSelect.length) {
+        this.planStatusResult = []
+        this.planStatusSelect.map((item) => {
+          this.planStatusResult.push(item)
+        })
+        this.planStatusResult.unshift('全选')
+      } else {
+        this.planStatusResult = []
+      }
+    },
+
+    // 获取计划信息
+    showPlanList () {
+      var user
+      let arr = document.cookie.split('; ')
+      for (let i = 0; i < arr.length; i++) {
+        let arr2 = arr[i].split('=')
+        if (arr2[0] === 'C-username') {
+          user = arr2[1]
+        }
+      }
+
+      let para = {
+        'status': this.planStatusResult.toString(),
+        'token': window.sessionStorage.getItem('jwt').toString(),
+        'account': user.toString()
+      }
+
+      this.listLoading = true
+      getPlanList(para).then((res) => {
+        this.planList = res.data
+        this.total = res.count
+        this.pageSizes = this.planList.length
+        this.listLoading = false
+      })
+    },
+
+    // 调节 进度 辅助函数
+    adjustItem: function (planID, planAccount) {
+      this.adjustFormVisible = true
+      this.adjustPlan.id = planID
+      this.adjustPlan.account = planAccount
+    },
+
+    // 开始 调节 进度
+    adjustSubmit: function () {
+      this.$confirm('是否更新进度?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        var user
+        let arr = document.cookie.split('; ')
+        for (let i = 0; i < arr.length; i++) {
+          let arr2 = arr[i].split('=')
+          if (arr2[0] === 'C-username') {
+            user = arr2[1]
+          }
+        }
+
+        let para = {
+          'plan_id': this.adjustPlan.id,
+          'plan_account': this.adjustPlan.account.toString(),
+          'plan_schedule': this.adjustPlan.schedule.toString(),
+          'token': window.sessionStorage.getItem('jwt').toString(),
+          'account': user.toString()
+        }
+        this.listLoading = true
+        adjustSchedule(para).then((res) => {
+          // alert(res.result)
+          if (res.result === 'SUCCESS') {
+            this.$message({
+              message: '调节进度成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '调节进度失败',
+              type: 'failure'
+            })
+          }
+          this.showPlanList()
+          this.adjustFormVisible = false
+          this.listLoading = false
+        })
+      })
+    },
+
+    // 退出 调节 进度
+    adjustBack: function () {
+      this.listLoading = false
+      this.adjustFormVisible = false
     }
-	}
+  }
+}
 
 </script>
 

@@ -116,9 +116,9 @@ export default {
             // alert("haha")
             if (res.token !== '') {
               this.$message({
-								message: '用户登录成功',
-								type: 'success'
-							});
+                message: '用户登录成功',
+                type: 'success'
+              })
               this.login_ing = false
               if (this.rememberme) {
                 this.setCookie(this.ruleFormTheWindIsClear.username, pwd, 7)
@@ -130,14 +130,14 @@ export default {
               // for (let v = 0; v < res.role.length; v ++ ){
               //   role.push(res.role[v])
               // }
-              window.sessionStorage.setItem('role',res.role)
+              window.sessionStorage.setItem('role', res.role)
               // alert(window.sessionStorage.getItem("jwt"))
               this.$router.push({path: this.redirect || '/'}).catch(() => {})
             } else {
-                this.$message({
-								message: '用户登录失败，请检查用户名、密码',
-								type: 'failure'
-							});
+              this.$message({
+                message: '用户登录失败，请检查用户名、密码',
+                type: 'failure'
+              })
               this.login_ing = false
             }
           }).catch(err => {

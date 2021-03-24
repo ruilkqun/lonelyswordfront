@@ -80,7 +80,6 @@
                         </div>
                   </el-card>
 
-
                   <el-card class="box-card " style="min-height: 200px;" align="middle">
                     <div class="el-card__body mid" style="background-color: #87CECB">
                       <div class="el-card__body mid">
@@ -239,10 +238,8 @@
 
 <script>
 import Sidebar from '@/components/Sidebar'
-import {changePassword, changePhone, getPersonalInfo} from "../api/user";
-import {upLoadUserImg,getUserImg} from "../api/image";
-
-
+import {changePassword, changePhone, getPersonalInfo} from '../api/user'
+import {upLoadUserImg, getUserImg} from '../api/image'
 
 export default {
   name: 'Container',
@@ -257,12 +254,12 @@ export default {
       personalInfoVisible: false,
       username: '',
       isCollapse: false,
-      userImg: "http://192.168.1.118:8088/images/6778573061923934209.png",
+      userImg: 'http://192.168.1.118:8088/images/6778573061923934209.png',
       personalInfo: {
-        "account": '',
-        "role": '',
-        "phone": '',
-        "article_count": ''
+        'account': '',
+        'role': '',
+        'phone': '',
+        'article_count': ''
       },
       changePhotographForm: {
 
@@ -276,12 +273,44 @@ export default {
         old_phone: '',
         new_phone: '',
         confirm_new_phone: ''
-      },
+      }
     }
   },
   methods: {
-    userImage() {
-        var user;
+    userImage () {
+      var user
+      let arr = document.cookie.split('; ')
+      for (let i = 0; i < arr.length; i++) {
+        let arr2 = arr[i].split('=')
+        if (arr2[0] === 'C-username') {
+          user = arr2[1]
+        }
+      }
+      let params = {
+        'token': window.sessionStorage.getItem('jwt').toString(),
+        'account': user.toString()
+      }
+      getUserImg(params).then((res) => {
+        this.userImg = res.path
+        // alert(res.path)
+      })
+    },
+    uploadFile (file) {
+      return new Promise(function (resolve, reject) {
+        let reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = function () {
+          resolve(this.result)
+        }
+      })
+    },
+    imgAdd (item) {
+      let file = item.file
+      let base64Data = ''
+      this.uploadFile(file).then(res => {
+        // alert(res)
+        base64Data = res.split(',')[1]
+        var user
         let arr = document.cookie.split('; ')
         for (let i = 0; i < arr.length; i++) {
           let arr2 = arr[i].split('=')
@@ -290,55 +319,23 @@ export default {
           }
         }
         let params = {
-          "token": window.sessionStorage.getItem('jwt').toString(),
-          "account": user.toString()
+          base64data: base64Data,
+          'token': window.sessionStorage.getItem('jwt').toString(),
+          'account': user.toString()
         }
-        getUserImg(params).then((res) => {
-          this.userImg = res.path
-          // alert(res.path)
-        })
-    },
-    uploadFile(file) {
-      return new Promise(function(resolve, reject) {
-      let reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = function() {
-          resolve(this.result)
-          }
-      })
-    },
-    imgAdd(item) {
-      let file = item.file
-      let base64Data = ''
-      this.uploadFile(file).then(res => {
-        // alert(res)
-          base64Data = res.split(',')[1]
-          var user;
-          let arr = document.cookie.split('; ')
-          for (let i = 0; i < arr.length; i++) {
-            let arr2 = arr[i].split('=')
-            if (arr2[0] === 'C-username') {
-              user = arr2[1]
-            }
-          }
-          let params = {
-            base64data: base64Data,
-            "token": window.sessionStorage.getItem('jwt').toString(),
-            "account": user.toString()
-          }
 
-          upLoadUserImg(params).then( res => {
+        upLoadUserImg(params).then(res => {
           if (res.result === 'SUCCESS') {
-              this.userImg = res.path;
-              this.$message({
-                message: '写入图片成功',
-                type: 'success'
-              });
-          }else {
-              this.$message({
-                message: '写入图片失败',
-                type: 'failure'
-              });
+            this.userImg = res.path
+            this.$message({
+              message: '写入图片成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '写入图片失败',
+              type: 'failure'
+            })
           }
           this.$refs.clean.clearFiles()
           this.changePhotographVisible = false
@@ -349,12 +346,12 @@ export default {
     beforeAvatarUpload (file) {
       const isLt2M = file.size / 1024 / 1024 < 10
       if (!isLt2M) {
-       this.$message.error('上传头像图片大小不能超过 10MB!')
+        this.$message.error('上传头像图片大小不能超过 10MB!')
       }
       return isLt2M
     },
     personalTotalInfo: function () {
-      var user;
+      var user
       let arr = document.cookie.split('; ')
       for (let i = 0; i < arr.length; i++) {
         let arr2 = arr[i].split('=')
@@ -363,14 +360,14 @@ export default {
         }
       }
       let params = {
-          "token": window.sessionStorage.getItem('jwt').toString(),
-          "account": user.toString()
-      };
+        'token': window.sessionStorage.getItem('jwt').toString(),
+        'account': user.toString()
+      }
       getPersonalInfo(params).then((res) => {
-          this.personalInfo.account = res.account;
-          this.personalInfo.role = res.role;
-          this.personalInfo.phone = res.phone;
-          this.personalInfo.article_count = res.article_count;
+        this.personalInfo.account = res.account
+        this.personalInfo.role = res.role
+        this.personalInfo.phone = res.phone
+        this.personalInfo.article_count = res.article_count
       })
     },
     changePhoneCancel: function () {
@@ -389,79 +386,77 @@ export default {
       this.changePasswordVisible = true
     },
     changePhoneCommit: function () {
-      this.$confirm('确定修改手机？','提示',{
-        type:'warning'
+      this.$confirm('确定修改手机？', '提示', {
+        type: 'warning'
       }).then(() => {
-          var user;
-          let arr = document.cookie.split('; ')
-          for (let i = 0; i < arr.length; i++) {
-            let arr2 = arr[i].split('=')
-            if (arr2[0] === 'C-username') {
-              user = arr2[1]
-            }
+        var user
+        let arr = document.cookie.split('; ')
+        for (let i = 0; i < arr.length; i++) {
+          let arr2 = arr[i].split('=')
+          if (arr2[0] === 'C-username') {
+            user = arr2[1]
           }
+        }
 
-				  let params = {
-				    "old_phone": this.changePhoneForm.old_phone.toString(),
-            "new_phone": this.changePhoneForm.new_phone.toString(),
-            "confirm_new_phone": this.changePhoneForm.confirm_new_phone.toString(),
-            "token": window.sessionStorage.getItem('jwt').toString(),
-            "account": user.toString()
-          };
+        let params = {
+          'old_phone': this.changePhoneForm.old_phone.toString(),
+          'new_phone': this.changePhoneForm.new_phone.toString(),
+          'confirm_new_phone': this.changePhoneForm.confirm_new_phone.toString(),
+          'token': window.sessionStorage.getItem('jwt').toString(),
+          'account': user.toString()
+        }
 
-          changePhone(params).then((res) => {
-            if (res.result === 'SUCCESS') {
-              this.$message({
-								message: '修改手机成功',
-								type: 'success'
-							});
-            }else {
-              this.$message({
-								message: '修改手机失败',
-								type: 'failure'
-							});
-            }
-            this.changePhoneVisible = false
+        changePhone(params).then((res) => {
+          if (res.result === 'SUCCESS') {
+            this.$message({
+              message: '修改手机成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '修改手机失败',
+              type: 'failure'
+            })
+          }
+          this.changePhoneVisible = false
         })
-
       })
     },
     changePasswordCommit: function () {
-      this.$confirm('确定修改密码？','提示',{
-        type:'warning'
+      this.$confirm('确定修改密码？', '提示', {
+        type: 'warning'
       }).then(() => {
-          var user;
-          let arr = document.cookie.split('; ')
-          for (let i = 0; i < arr.length; i++) {
-            let arr2 = arr[i].split('=')
-            if (arr2[0] === 'C-username') {
-              user = arr2[1]
-            }
+        var user
+        let arr = document.cookie.split('; ')
+        for (let i = 0; i < arr.length; i++) {
+          let arr2 = arr[i].split('=')
+          if (arr2[0] === 'C-username') {
+            user = arr2[1]
           }
+        }
 
-				  let params = {
-				    "old_password": this.changePasswordForm.old_password.toString(),
-            "new_password": this.changePasswordForm.new_password.toString(),
-            "confirm_new_password": this.changePasswordForm.confirm_new_password.toString(),
-            "token": window.sessionStorage.getItem('jwt').toString(),
-            "account": user.toString()
-          };
+        let params = {
+          'old_password': this.changePasswordForm.old_password.toString(),
+          'new_password': this.changePasswordForm.new_password.toString(),
+          'confirm_new_password': this.changePasswordForm.confirm_new_password.toString(),
+          'token': window.sessionStorage.getItem('jwt').toString(),
+          'account': user.toString()
+        }
 
-          changePassword(params).then((res) => {
-            if (res.result === 'SUCCESS') {
-              this.$message({
-								message: '修改密码成功',
-								type: 'success'
-							});
-            }else {
-              this.$message({
-								message: '修改密码失败',
-								type: 'failure'
-							});
-            }
-            this.changePasswordVisible = false
+        changePassword(params).then((res) => {
+          if (res.result === 'SUCCESS') {
+            this.$message({
+              message: '修改密码成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '修改密码失败',
+              type: 'failure'
+            })
+          }
+          this.changePasswordVisible = false
         })
-
       })
     },
     toggleSideBar () {
@@ -496,7 +491,7 @@ export default {
     this.userImage()
 
     // let user = sessionStorage.getItem('user')
-    var user;
+    var user
     let arr = document.cookie.split('; ')
     for (let i = 0; i < arr.length; i++) {
       let arr2 = arr[i].split('=')

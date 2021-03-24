@@ -54,7 +54,6 @@
       </el-table-column>
     </el-table>
 
-
     <!--添加界面-->
     <el-dialog
       title="添加"
@@ -93,7 +92,6 @@
       </div>
     </el-dialog>
 
-
     <!--删除界面-->
     <el-dialog
       title="删除"
@@ -129,7 +127,6 @@
         </el-button>
       </div>
     </el-dialog>
-
 
     <!--编辑界面-->
     <el-dialog
@@ -187,235 +184,234 @@
 </template>
 
 <script>
-  import { createClassify,getClassifyList,removeClassify,updateClassify } from "../../api/article";
+import { createClassify, getClassifyList, removeClassify, updateClassify } from '../../api/article'
 
-  export default {
-    name: 'article-classify',
-		data() {
-			return {
-			  addClassify: {
-			    classify_name: '',
-        },
-        articleClassifyList: [],
-        removeClassify: {
-			    classify_id: 0,
-        },
-        updateClassify: {
-			    classify_id: 0,
-          classify_name: '',
-        },
-				total: 0,
-				page: 1,
-        pageSizes: 1,
-        listLoading: false,
-        addFormVisible: false, // 添加界面是否显示
-        removeFormVisible: false, // 删除界面是否显示
-        removeButtonVisible: false, // 删除按钮是否显示
-        isEditPropertyShow: false, // 编辑按钮是否显示
-        editFormVisible: false, // 编辑界面是否显示
-        // 添加界面规则设定
-				addFormRules: {
-					name: [
-						{
-						  required: true,
-              message: '请输入分类名',
-              trigger: 'blur'
-						}
-					],
-				}
-			}
-		},
-    mounted() {
-				this.showClassifyList();
-			},
-    methods: {
-      handleCurrentChange(val) {
-				this.page = val;
-				this.showClassifyList();
-			},
-
-      // 获取账户信息
-      showClassifyList(){
-          var user;
-          let arr = document.cookie.split('; ')
-          for (let i = 0; i < arr.length; i++) {
-            let arr2 = arr[i].split('=')
-            if (arr2[0] === 'C-username') {
-              user = arr2[1]
-            }
+export default {
+  name: 'article-classify',
+  data () {
+    return {
+      addClassify: {
+        classify_name: ''
+      },
+      articleClassifyList: [],
+      removeClassify: {
+        classify_id: 0
+      },
+      updateClassify: {
+        classify_id: 0,
+        classify_name: ''
+      },
+      total: 0,
+      page: 1,
+      pageSizes: 1,
+      listLoading: false,
+      addFormVisible: false, // 添加界面是否显示
+      removeFormVisible: false, // 删除界面是否显示
+      removeButtonVisible: false, // 删除按钮是否显示
+      isEditPropertyShow: false, // 编辑按钮是否显示
+      editFormVisible: false, // 编辑界面是否显示
+      // 添加界面规则设定
+      addFormRules: {
+        name: [
+          {
+            required: true,
+            message: '请输入分类名',
+            trigger: 'blur'
           }
-          let params = {
-            "token": window.sessionStorage.getItem('jwt').toString(),
-            "account": user.toString()
-          }
-
-          getClassifyList(params).then((res) => {
-            this.articleClassifyList = res.data;
-            this.total = res.count;
-            this.pageSizes = this.articleClassifyList.length;
-            this.listLoading = false;
-        });
-      },
-
-      // 显示添加表单
-      showAddForm() {
-				this.addFormVisible = true;
-			},
-
-      // 开始添加
-			addSubmit: function () {
-        this.$confirm('是否添加该分类?', '提示', {
-					type: 'warning'
-				}).then(() => {
-          var user;
-          let arr = document.cookie.split('; ')
-          for (let i = 0; i < arr.length; i++) {
-            let arr2 = arr[i].split('=')
-            if (arr2[0] === 'C-username') {
-              user = arr2[1]
-            }
-          }
-
-				  let para = {
-				    "classify_name": this.addClassify.classify_name.toString(),
-            "token": window.sessionStorage.getItem('jwt').toString(),
-            "account": user.toString()
-          };
-				  this.listLoading = true;
-				  createClassify(para).then((res) => {
-				    // alert(res.result)
-            if (res.result === 'SUCCESS') {
-              this.$message({
-								message: '添加分类成功',
-								type: 'success'
-							});
-            }else {
-              this.$message({
-								message: '添加分类失败',
-								type: 'failure'
-							});
-            }
-            this.showClassifyList();
-            this.addFormVisible = false;
-            this.listLoading = false;
-        })
-			})
-      },
-
-      // 退出添加
-      addBack: function (){
-        this.listLoading = false;
-        this.addFormVisible = false;
-      },
-
-
-      removeItem: function (classify_id){
-        this.removeFormVisible = true;
-        this.removeClassify.classify_id = classify_id;
-      },
-
-
-      // 开始删除
-			removeSubmit: function () {
-        this.$confirm('是否删除该分类?', '提示', {
-					type: 'warning'
-				}).then(() => {
-          var user;
-          let arr = document.cookie.split('; ')
-          for (let i = 0; i < arr.length; i++) {
-            let arr2 = arr[i].split('=')
-            if (arr2[0] === 'C-username') {
-              user = arr2[1]
-            }
-          }
-
-				  let para = {
-				    "classify_id": this.removeClassify.classify_id,
-            "token": window.sessionStorage.getItem('jwt').toString(),
-            "account": user.toString()
-          };
-				  this.listLoading = true;
-				  removeClassify(para).then((res) => {
-				    // alert(res.result)
-            if (res.result === 'SUCCESS') {
-              this.$message({
-								message: '删除该分类成功',
-								type: 'success'
-							});
-            }else {
-              this.$message({
-								message: '删除该分类失败',
-								type: 'failure'
-							});
-            }
-            this.showClassifyList();
-            this.removeFormVisible = false;
-            this.listLoading = false;
-        })
-			})
-      },
-
-      // 退出删除
-      removeBack: function (){
-        this.listLoading = false;
-        this.removeFormVisible = false;
-      },
-
-      // 更改分类
-      editProperty: function (classify_id){
-        this.editFormVisible = true;
-        this.updateClassify.classify_id = classify_id;
-      },
-
-      // 退出更新
-      updateBack: function (){
-        this.listLoading = false;
-        this.editFormVisible = false;
-      },
-
-
-      // 开始更新
-			updateSubmit: function () {
-        this.$confirm('是否更新该分类?', '提示', {
-					type: 'warning'
-				}).then(() => {
-          var user;
-          let arr = document.cookie.split('; ')
-          for (let i = 0; i < arr.length; i++) {
-            let arr2 = arr[i].split('=')
-            if (arr2[0] === 'C-username') {
-              user = arr2[1]
-            }
-          }
-
-				  let para = {
-				    "classify_id": this.updateClassify.classify_id,
-            "classify_name": this.updateClassify.classify_name,
-            "token": window.sessionStorage.getItem('jwt').toString(),
-            "account": user.toString()
-          };
-				  this.listLoading = true;
-				  updateClassify(para).then((res) => {
-				    // alert(res.result)
-            if (res.result === 'SUCCESS') {
-              this.$message({
-								message: '更新该分类成功',
-								type: 'success'
-							});
-            }else {
-              this.$message({
-								message: '更新该分类失败',
-								type: 'failure'
-							});
-            }
-            this.showClassifyList();
-            this.editFormVisible = false;
-            this.listLoading = false;
-        })
-			})
-      },
+        ]
+      }
     }
-	}
+  },
+  mounted () {
+    this.showClassifyList()
+  },
+  methods: {
+    handleCurrentChange (val) {
+      this.page = val
+      this.showClassifyList()
+    },
+
+    // 获取账户信息
+    showClassifyList () {
+      var user
+      let arr = document.cookie.split('; ')
+      for (let i = 0; i < arr.length; i++) {
+        let arr2 = arr[i].split('=')
+        if (arr2[0] === 'C-username') {
+          user = arr2[1]
+        }
+      }
+      let params = {
+        'token': window.sessionStorage.getItem('jwt').toString(),
+        'account': user.toString()
+      }
+
+      getClassifyList(params).then((res) => {
+        this.articleClassifyList = res.data
+        this.total = res.count
+        this.pageSizes = this.articleClassifyList.length
+        this.listLoading = false
+      })
+    },
+
+    // 显示添加表单
+    showAddForm () {
+      this.addFormVisible = true
+    },
+
+    // 开始添加
+    addSubmit: function () {
+      this.$confirm('是否添加该分类?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        var user
+        let arr = document.cookie.split('; ')
+        for (let i = 0; i < arr.length; i++) {
+          let arr2 = arr[i].split('=')
+          if (arr2[0] === 'C-username') {
+            user = arr2[1]
+          }
+        }
+
+        let para = {
+          'classify_name': this.addClassify.classify_name.toString(),
+          'token': window.sessionStorage.getItem('jwt').toString(),
+          'account': user.toString()
+        }
+        this.listLoading = true
+        createClassify(para).then((res) => {
+          // alert(res.result)
+          if (res.result === 'SUCCESS') {
+            this.$message({
+              message: '添加分类成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '添加分类失败',
+              type: 'failure'
+            })
+          }
+          this.showClassifyList()
+          this.addFormVisible = false
+          this.listLoading = false
+        })
+      })
+    },
+
+    // 退出添加
+    addBack: function () {
+      this.listLoading = false
+      this.addFormVisible = false
+    },
+
+    // eslint-disable-next-line camelcase
+    removeItem: function (classify_id) {
+      this.removeFormVisible = true
+      // eslint-disable-next-line camelcase
+      this.removeClassify.classify_id = classify_id
+    },
+
+    // 开始删除
+    removeSubmit: function () {
+      this.$confirm('是否删除该分类?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        var user
+        let arr = document.cookie.split('; ')
+        for (let i = 0; i < arr.length; i++) {
+          let arr2 = arr[i].split('=')
+          if (arr2[0] === 'C-username') {
+            user = arr2[1]
+          }
+        }
+
+        let para = {
+          'classify_id': this.removeClassify.classify_id,
+          'token': window.sessionStorage.getItem('jwt').toString(),
+          'account': user.toString()
+        }
+        this.listLoading = true
+        removeClassify(para).then((res) => {
+          // alert(res.result)
+          if (res.result === 'SUCCESS') {
+            this.$message({
+              message: '删除该分类成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '删除该分类失败',
+              type: 'failure'
+            })
+          }
+          this.showClassifyList()
+          this.removeFormVisible = false
+          this.listLoading = false
+        })
+      })
+    },
+
+    // 退出删除
+    removeBack: function () {
+      this.listLoading = false
+      this.removeFormVisible = false
+    },
+
+    // 更改分类
+    editProperty: function (classifyID) {
+      this.editFormVisible = true
+      this.updateClassify.classify_id = classifyID
+    },
+
+    // 退出更新
+    updateBack: function () {
+      this.listLoading = false
+      this.editFormVisible = false
+    },
+
+    // 开始更新
+    updateSubmit: function () {
+      this.$confirm('是否更新该分类?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        var user
+        let arr = document.cookie.split('; ')
+        for (let i = 0; i < arr.length; i++) {
+          let arr2 = arr[i].split('=')
+          if (arr2[0] === 'C-username') {
+            user = arr2[1]
+          }
+        }
+
+        let para = {
+          'classify_id': this.updateClassify.classify_id,
+          'classify_name': this.updateClassify.classify_name,
+          'token': window.sessionStorage.getItem('jwt').toString(),
+          'account': user.toString()
+        }
+        this.listLoading = true
+        updateClassify(para).then((res) => {
+          // alert(res.result)
+          if (res.result === 'SUCCESS') {
+            this.$message({
+              message: '更新该分类成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '更新该分类失败',
+              type: 'failure'
+            })
+          }
+          this.showClassifyList()
+          this.editFormVisible = false
+          this.listLoading = false
+        })
+      })
+    }
+  }
+}
 
 </script>
 

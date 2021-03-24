@@ -11,7 +11,7 @@ import '@/styles/index.scss'
 import './icons'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
-import store from "./store/index";
+import store from './store/index'
 
 Vue.use(ElementUI)
 Vue.use(mavonEditor)
@@ -20,36 +20,35 @@ Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
   const jwt = sessionStorage.getItem('jwt')
   if (jwt) {
-      if (to.path === '/login') {
-        window.sessionStorage.removeItem('jwt')
-        window.sessionStorage.removeItem('role')
-        store.getters.routers = []
+    if (to.path === '/login') {
+      window.sessionStorage.removeItem('jwt')
+      window.sessionStorage.removeItem('role')
+      store.getters.routers = []
+      next()
+    } else {
+      const r = sessionStorage.getItem('role')
+      if (!r) {
         next()
-      }else {
-        const r = sessionStorage.getItem('role')
-        if (!r) {
-          next()
-        } else {
-          let roles = [];
-          for (let v=0;v< r.split(',').length;v++){
-            roles.push(r.split(',')[v])
-          }
-          // window.sessionStorage.setItem('role', 'admin_role')
-          // const userRole = ["admin_role1"]
-          store.dispatch('GenerateRoutes', roles).then(() => {
-            const newRouter = store.getters.routers
-            // alert(newRouter[1]['children'])
-            // alert(newRouter[0]['path'])
-            router.addRoutes(newRouter)
-            // next()
-
-            sessionStorage.removeItem('role')
-            next({...to, replace:true})
-          })
+      } else {
+        let roles = []
+        for (let v = 0; v < r.split(',').length; v++) {
+          roles.push(r.split(',')[v])
         }
+        // window.sessionStorage.setItem('role', 'admin_role')
+        // const userRole = ["admin_role1"]
+        store.dispatch('GenerateRoutes', roles).then(() => {
+          const newRouter = store.getters.routers
+          // alert(newRouter[1]['children'])
+          // alert(newRouter[0]['path'])
+          router.addRoutes(newRouter)
+          // next()
 
+          sessionStorage.removeItem('role')
+          next({...to, replace: true})
+        })
       }
-  }else if (to.path !== '/login') {
+    }
+  } else if (to.path !== '/login') {
     next({
       path: '/login'
     })
